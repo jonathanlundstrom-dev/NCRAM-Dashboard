@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>NC-RAM Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -69,12 +72,32 @@ tr:hover td{background:#fafaf8}
 .km{background:#fff;border:1px solid #e8e6df;border-radius:10px;padding:12px;text-align:center}
 .km .kv{font-size:22px;font-weight:600;color:#1a1a18}
 .km .kl{font-size:10px;color:#888780;text-transform:uppercase;letter-spacing:.05em;margin-top:3px;font-weight:500}
-@media(max-width:640px){
-  .mrow{grid-template-columns:1fr 1fr}
-  .twoc{grid-template-columns:1fr}
-  .kgrid{grid-template-columns:1fr 1fr}
-  .wsts{margin-left:0}
-}
+
+.tab.itab.active{color:#534AB7;border-bottom-color:#534AB7}
+.icard{background:#fff;border:1px solid #e8e6df;border-radius:12px;padding:20px;margin-bottom:12px}
+.icard .ihead{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.icard .inum{width:28px;height:28px;border-radius:50%;background:#534AB7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.icard .ititle{font-size:13px;font-weight:600;color:#1a1a18;margin-bottom:3px}
+.icard .ibody{font-size:12px;color:#3d3d3a;line-height:1.65}
+.icard .itag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;margin-top:8px}
+.icard.pos-card{border-left:3px solid #1D9E75}
+.icard.neg-card{border-left:3px solid #E24B4A}
+.icard.neu-card{border-left:3px solid #EF9F27}
+.icard.info-card{border-left:3px solid #378ADD}
+.itag.pos{background:#EAF3DE;color:#2d6b0e}
+.itag.neg{background:#FCEBEB;color:#8c2020}
+.itag.neu{background:#FAEEDA;color:#854F0B}
+.itag.info{background:#e6f1fb;color:#0c447c}
+.ibtn{font-size:12px;padding:8px 18px;border:1px solid #534AB7;border-radius:8px;cursor:pointer;background:#534AB7;color:#fff;font-weight:500}
+.ibtn:hover{background:#3C3489}
+.ibtn:disabled{background:#d3d1c7;border-color:#d3d1c7;cursor:not-allowed}
+.isel{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.isel-btn{font-size:11px;padding:5px 12px;border:1px solid #d3d1c7;border-radius:20px;cursor:pointer;background:#fff;color:#73726c;font-weight:500}
+.isel-btn.on{background:#534AB7;color:#fff;border-color:#534AB7}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid #d3d1c7;border-top-color:#534AB7;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.anote{font-size:11px;color:#888780;margin-top:12px;padding:10px 12px;background:#f8f8f6;border-radius:8px;border:1px solid #e8e6df}
+@media(max-width:640px){.mrow{grid-template-columns:1fr 1fr}.twoc{grid-template-columns:1fr}.kgrid{grid-template-columns:1fr 1fr}.wsts{margin-left:0}}
 </style>
 </head>
 <body>
@@ -108,6 +131,7 @@ tr:hover td{background:#fafaf8}
   <button class="tab" onclick="goTab('ncram',this)">NCRAM Rankings</button>
   <button class="tab" onclick="goTab('profile',this)">Individual Profile</button>
   <button class="tab ftab" onclick="goTab('fitness',this)">Focus Wave - Fitness</button>
+  <button class="tab itab" onclick="goTab('insights',this)">AI Insights</button>
 </div>
 
 <!-- NATIONAL -->
@@ -230,6 +254,32 @@ tr:hover td{background:#fafaf8}
   </div>
   <div class="card gr"><div class="ct">Account-Level Detail</div><table id="FDT"></table></div>
   <div class="card gr" style="margin-top:14px"><div class="ct">NCRAM Leaderboard - Fitness Focus Wave</div><table id="FLT"></table></div>
+</div>
+
+<!-- INSIGHTS -->
+<div id="insights" class="section">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:16px;font-weight:600;color:#1a1a18">AI Insights</div>
+      <div style="font-size:12px;color:#73726c;margin-top:2px">Powered by Claude AI - select a focus area then click Generate</div>
+    </div>
+    <button class="ibtn" id="genBtn" onclick="generateInsights()">Generate Insights</button>
+  </div>
+  <div class="isel" id="isel">
+    <button class="isel-btn on" onclick="setIF('overall',this)">Overall Performance</button>
+    <button class="isel-btn" onclick="setIF('volume',this)">Volume Trends</button>
+    <button class="isel-btn" onclick="setIF('kpi',this)">KPI Activity</button>
+    <button class="isel-btn" onclick="setIF('fitness',this)">Fitness Focus Wave</button>
+    <button class="isel-btn" onclick="setIF('risk',this)">Risks and Opportunities</button>
+  </div>
+  <div id="iOut">
+    <div style="padding:48px;text-align:center;color:#888780;font-size:13px;background:#fff;border:1px solid #e8e6df;border-radius:12px">
+      <div style="font-size:32px;margin-bottom:12px">&#128161;</div>
+      <div style="font-weight:500;color:#1a1a18;margin-bottom:6px">Ready to generate insights</div>
+      <div>Select a focus area above and click Generate Insights.</div>
+    </div>
+  </div>
+  <div class="anote">&#128274; Insights use Claude AI with your live dashboard data. Set <code>ANTHROPIC_KEY</code> in the source to enable. Without a key, curated demo insights are shown. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:#534AB7">console.anthropic.com</a>.</div>
 </div>
 
 </div>
@@ -502,6 +552,7 @@ function goTab(id, el) {
   if (id === 'ncram')    renderRanks();
   if (id === 'profile')  renderProf();
   if (id === 'fitness')  renderFit();
+  if (id === 'insights') {}
 }
 
 function applyF() {
@@ -1001,6 +1052,179 @@ function renderFit() {
     ]);
   }
   document.getElementById('FLT').innerHTML='<thead><tr><th>Rank</th><th>NCRAM</th><th>Region</th><th class="r">Accts</th><th class="r">Chains</th><th class="r">New Reach</th><th class="r">Equip</th><th class="r">Activations</th><th>Reach vs Team</th></tr></thead><tbody>'+lTrs+'</tbody>';
+}
+
+
+var ANTHROPIC_KEY = '';
+var curIF = 'overall';
+
+function setIF(focus, btn) {
+  curIF = focus;
+  document.querySelectorAll('#isel .isel-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+
+function buildPrompt(focus) {
+  var vr = gVolRanks();
+  var tA=0,tP=0;
+  for(var i=0;i<VOL.length;i++){tA+=VOL[i].act;tP+=VOL[i].py;}
+  var tvsPY = Math.round(((tA-tP)/tP)*100);
+  var abovePY=0,belowPY=0;
+  for(var j=0;j<vr.length;j++){if(vr[j].vs>0)abovePY++;else belowPY++;}
+  var topVol = vr[0].n+' ('+Math.round(vr[0].vs*100)+'% vs PY)';
+  var botVol = vr[vr.length-1].n+' ('+Math.round(vr[vr.length-1].vs*100)+'% vs PY)';
+  var topKPI = KPI[0].n+' (score: '+KPI[0].score+')';
+  var segs=['Big3','Vend','CU','Trvl'], sn={Big3:'Big 3',Vend:'Vending',CU:'C and U',Trvl:'Travel'}, ss={};
+  for(var s=0;s<segs.length;s++){var sa=0,sp=0;for(var v=0;v<VOL.length;v++){if(VOL[v].seg===segs[s]){sa+=VOL[v].act;sp+=VOL[v].py;}}ss[segs[s]]={vs:sp?Math.round(((sa-sp)/sp)*100):0};}
+  var rs={};for(var r=0;r<REGS.length;r++){var ra=0,rp=0;for(var rv=0;rv<VOL.length;rv++){if(VOL[rv].reg===REGS[r]){ra+=VOL[rv].act;rp+=VOL[rv].py;}}rs[REGS[r]]={vs:rp?Math.round(((ra-rp)/rp)*100):0};}
+  var tBD=0,tCh=0,tRe=0,tEq=0;for(var k=0;k<KPI.length;k++){tBD+=KPI[k].bd;tCh+=KPI[k].chain;tRe+=KPI[k].reach;tEq+=KPI[k].equip;}
+  var fR=0,fE=0,fA=0;for(var f=0;f<FIT.length;f++){fR+=FIT[f].reach;fE+=FIT[f].eqQ;fA+=FIT[f].acts;}
+  var ctx = 'NC-RAM Performance Summary (Jan-Feb 2026). ' +
+    'Team: 12 NCRAMs across 5 regions. ' +
+    'Total volume vs PY: +' + tvsPY + '%. ' +
+    abovePY + ' NCRAMs above PY, ' + belowPY + ' below. ' +
+    'Top vol: ' + topVol + '. ' +
+    'Bottom vol: ' + botVol + '. ' +
+    'Top KPI: ' + topKPI + '. ' +
+    'Segments vs PY: Big 3: ' + ss.Big3.vs + '%, Vending: ' + ss.Vend.vs + '%, C and U: ' + ss.CU.vs + '%, Travel: ' + ss.Trvl.vs + '%. ' +
+    'Regions vs PY: Central: ' + rs.Central.vs + '%, Midwest: ' + rs.Midwest.vs + '%, Northeast: ' + rs.Northeast.vs + '%, Southeast: ' + rs.Southeast.vs + '%, West: ' + rs.West.vs + '%. ' +
+    'KPI: ' + tBD + ' BD wins, ' + tCh + ' chain wins, ' + tRe + ' reach wins, ' + tEq + ' equip placements. ' +
+    'Fitness Wave: ' + FIT.length + ' accounts, ' + fR + ' reach, ' + fE + ' equip, ' + fA + ' activations. ' +
+    'Vol rankings vs PY: ' + vr.map(function(r,i){return '#'+(i+1)+' '+r.n.split(' ')[0]+': '+Math.round(r.vs*100)+'%';}).join(', ') + '. ' +
+    'KPI rankings: ' + KPI.map(function(k){return '#'+k.rank+' '+k.n.split(' ')[0]+' score:'+k.score;}).join(', ') + '.';
+  var fm = {
+    overall: 'overall team performance, standout performers, and headline trends',
+    volume: 'volume performance patterns across segments and regions',
+    kpi: 'KPI activity: BD wins, chain wins, reach wins, and equipment placements',
+    fitness: 'Fitness Focus Wave - Zero Missed Workouts campaign execution and output',
+    risk: 'key risks to watch and biggest opportunities for the team'
+  };
+  return ctx + ' Generate exactly 4 sharp specific insights focused on: ' + fm[focus] + '. ' +
+    'Return ONLY a JSON array of 4 objects each with: title (5-8 word headline), body (2-3 sentences using actual data), sentiment (positive/negative/neutral/info), tag (short label). Use real names and numbers.';
+}
+
+function scls(s){if(s==='positive')return 'pos-card';if(s==='negative')return 'neg-card';if(s==='neutral')return 'neu-card';return 'info-card';}
+function tcls(s){if(s==='positive')return 'pos';if(s==='negative')return 'neg';if(s==='neutral')return 'neu';return 'info';}
+
+function renderInsights(arr) {
+  var h='';
+  for(var i=0;i<arr.length;i++){
+    var ins=arr[i];
+    h+='<div class="icard '+scls(ins.sentiment)+'">' +
+      '<div class="ihead"><div class="inum">'+(i+1)+'</div>' +
+      '<div class="ititle">'+ins.title+'</div></div>' +
+      '<div class="ibody">'+ins.body+'</div>' +
+      '<span class="itag '+tcls(ins.sentiment)+'">'+ins.tag+'</span></div>';
+  }
+  document.getElementById('iOut').innerHTML=h;
+}
+
+function showErr(msg, detail){
+  var d = detail ? '<div style="margin-top:8px;font-size:11px;font-family:monospace;background:#f8f8f6;padding:8px;border-radius:6px;text-align:left;word-break:break-all;color:#5f5e5a">'+detail+'</div>' : '';
+  document.getElementById('iOut').innerHTML='<div style="padding:32px;text-align:center;color:#888780;font-size:13px;background:#fff;border:1px solid #e8e6df;border-radius:12px"><div style="font-size:24px;margin-bottom:10px">&#9888;</div><div style="font-weight:500;color:#1a1a18;margin-bottom:6px">Could not generate insights</div><div>'+msg+'</div>'+d+'</div>';
+}
+
+function generateInsights(){
+  var btn=document.getElementById('genBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Generating...';
+  document.getElementById('iOut').innerHTML='<div style="padding:48px;text-align:center;color:#888780;font-size:13px"><span class="spin" style="width:24px;height:24px;border-width:3px"></span><div style="margin-top:14px">Analyzing your team data with Claude AI...</div></div>';
+
+  if(!ANTHROPIC_KEY||ANTHROPIC_KEY.trim()===''){
+    document.getElementById('iOut').innerHTML='<div style="padding:32px;text-align:center;color:#888780;font-size:13px;background:#fff;border:1px solid #faeeda;border-radius:12px"><div style="font-size:20px;margin-bottom:8px">&#128274;</div><div style="font-weight:500;color:#1a1a18;margin-bottom:6px">No API key detected</div><div>The <code>ANTHROPIC_KEY</code> variable is empty in your index.html. Find the line <code>var ANTHROPIC_KEY = \'\'</code> and paste your key between the quotes, then re-upload to GitHub.</div></div>';
+    btn.disabled=false;btn.innerHTML='Generate Insights';
+    return;
+  }
+
+  var key = ANTHROPIC_KEY.trim();
+  if(key.length < 20){
+    showErr(
+      'API key is missing or too short.',
+      'Open index.html and find the line: var ANTHROPIC_KEY = \'\'  then paste your full key between the quotes. ' +
+      'Current value is ' + key.length + ' characters (should be 100+).'
+    );
+    btn.disabled=false;btn.innerHTML='Try Again';
+    return;
+  }
+  document.getElementById('iOut').innerHTML='<div style="padding:48px;text-align:center;color:#888780;font-size:13px"><span class="spin" style="width:24px;height:24px;border-width:3px"></span><div style="margin-top:14px">Calling Claude API... (key: '+key.substring(0,8)+'...'+key.slice(-4)+')</div></div>';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':key,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:buildPrompt(curIF)}]})
+  })
+  .then(function(r){
+    if(!r.ok){
+      return r.json().then(function(e){
+        var code = r.status;
+        var msg = e && e.error ? e.error.message : 'Unknown error';
+        if(code===401) throw new Error('401 - Invalid API key. Double-check your key at console.anthropic.com');
+        if(code===403) throw new Error('403 - API key lacks permission. Make sure it has Messages access.');
+        if(code===429) throw new Error('429 - Rate limit hit. Wait a moment and try again.');
+        throw new Error(code+' - '+msg);
+      });
+    }
+    return r.json();
+  })
+  .then(function(data){
+    btn.disabled=false;btn.innerHTML='Regenerate';
+    if(data.error){showErr('API error: '+data.error.message);return;}
+    var txt=data.content&&data.content[0]?data.content[0].text:'';
+    try{
+      var arr=JSON.parse(txt.replace(/```json|```/g,'').trim());
+      if(!Array.isArray(arr))throw 0;
+      renderInsights(arr);
+    }catch(e){showErr('Received a response but could not parse it.','Raw: '+txt.substring(0,200));}
+  })
+  .catch(function(e){
+    btn.disabled=false;btn.innerHTML='Try Again';
+    var msg = e && e.message ? e.message : 'Unknown network error';
+    if(msg.toLowerCase().indexOf('failed to fetch')>=0||msg.toLowerCase().indexOf('networkerror')>=0){
+      showErr('Browser blocked the request (CORS).','This usually means the anthropic-dangerous-direct-browser-access header is missing, or your browser has a strict security policy. Try opening the dashboard in Chrome or Edge.');
+    } else {
+      showErr(msg);
+    }
+  });
+}
+
+function demoInsights(){
+  var D={
+    overall:[
+      {title:'West region leads all 5 regions in growth',body:'The West region is the standout performer with Amy Quinet and Jenny Lynch both posting strong gains. Jenny Lynch leads in C and U at +56.0% vs PY driven by aggressive account development. The West accounts for the highest volume contribution nationally this period.',sentiment:'positive',tag:'Top Region'},
+      {title:'TJ McGowan Travel decline needs immediate action',body:'TJ McGowan is down -52.5% vs PY in Travel - the steepest single-segment decline on the team. This pulls overall Midwest Travel to -40.4% vs PY. A focused account review is warranted to determine if this is temporary or structural.',sentiment:'negative',tag:'Watch List'},
+      {title:'Fitness Focus Wave creating strong reach pipeline',body:'The Zero Missed Workouts wave has activated 36 accounts and generated 305 new reach locations. Katie Naviaux alone secured 80 locations via Vasa and Defined Fitness. This is a strong foundation for future volume conversion in the fitness channel.',sentiment:'positive',tag:'Wave Impact'},
+      {title:'Vending is the team highest-volume segment',body:'Vending is outperforming all other segments and most NCRAMs are posting gains. Carroll Jenkins is up +59.4% and Rudy Wagner +71.9% vs PY. The segment appears structurally healthy heading into Q2.',sentiment:'info',tag:'Segment Strength'}
+    ],
+    volume:[
+      {title:'Jenny Lynch posting exceptional C and U growth',body:'Jenny Lynch is up +56.0% vs PY in C and U with 4,436 actual vs 2,844 PY - the strongest segment gain on the team. This is driven by aggressive account development and strong distributor alignment in the West region.',sentiment:'positive',tag:'Strong Growth'},
+      {title:'Rudy Wagner Travel collapse warrants review',body:'Rudy Wagner is down -77.5% vs PY in Travel (71 actual vs 316 PY). Combined with TJ McGowan at -52.5%, the Midwest Travel segment is significantly underperforming. Root cause analysis is needed immediately.',sentiment:'negative',tag:'Urgent Review'},
+      {title:'Sierra Ford driving Central Vending performance',body:'Sierra Ford posted 13,374 actual in Vending vs 9,474 PY (+41.2%), the second-highest Vending gain on the team. This reflects strong distributor alignment and is keeping the Central region on trend.',sentiment:'positive',tag:'Top Performer'},
+      {title:'Big 3 is exactly split - six up, six down',body:'6 NCRAMs are above PY in Big 3 and 6 are below. Jenny Lynch (+53.6%) and Josh Queja (+13.3%) are the standouts. TJ McGowan (-8.2%) and Amy Quinet (-7.8%) are the primary drags. Big 3 team total is effectively flat vs PY.',sentiment:'neutral',tag:'Mixed Signal'}
+    ],
+    kpi:[
+      {title:'Sierra Ford leads KPI with balanced output',body:'Sierra Ford tops the KPI rankings with a score of 42, driven by 57 cold equipment placements - the highest on the team - plus 3 BD wins and 53 net new reach wins. This balanced output across all KPI categories is the benchmark for the team.',sentiment:'positive',tag:'Top KPI Rank'},
+      {title:'Rudy Wagner most active on BD wins',body:'Rudy Wagner leads with 5 BD wins covering Healthcare, Travel, B and I, and Fitness. Despite strong BD activity, a lower chain win count and reach number keeps the overall KPI score at 70. Pairing BD activity with chain wins would significantly improve ranking.',sentiment:'info',tag:'BD Leader'},
+      {title:'Carroll Jenkins showing low KPI output',body:'Carroll Jenkins ranks last with only 1 BD win, 0 chain wins, 2 reach wins, and 3 equipment placements. Given the Southeast region potential and strong Vending performance, there is a significant KPI activity gap that should be addressed.',sentiment:'negative',tag:'Opportunity Gap'},
+      {title:'Katie Naviaux leads all NCRAMs on net new reach',body:'Katie Naviaux generated 81 net new reach wins - the highest on the team - primarily from Vasa Fitness (72 locations) and Defined Fitness (8 locations). This reach volume will directly translate into volume gains in future periods.',sentiment:'positive',tag:'Reach Leader'}
+    ],
+    fitness:[
+      {title:'Katie Naviaux dominates Fitness Wave reach',body:'Katie Naviaux secured 80 new reach locations from just 2 accounts - Vasa Fitness (72 locations, 72 activations) and Defined Fitness (8 locations, 3 activations). This is the largest single-NCRAM fitness output and represents a major volume pipeline.',sentiment:'positive',tag:'Wave Leader'},
+      {title:'Amy Quinet leads on fitness activations in West',body:'Amy Quinet generated 48 activations across In Shape (25), UFC new (22), and Bouldering Project (1). With 42-location In Shape and 22-location UFC secured, the West fitness footprint is the most diverse geographically.',sentiment:'positive',tag:'Top Activations'},
+      {title:'Northeast fitness execution is trailing all regions',body:'The Northeast has only 4 fitness accounts across Greg Drillock (Rumble, 3 reach) and Montana Renno (3 accounts, 3 total reach). Chris Trott logged Central Rock Gym with only 2 reach. The Northeast is significantly behind West and Central on wave execution.',sentiment:'negative',tag:'Region Gap'},
+      {title:'67 equipment units placed builds durable distribution',body:'The team placed 67 cold equipment units across the fitness wave - led by Meg Flom (14 Mega Slims at Powerhouse Gym), Katie Naviaux (7 at Defined Fitness), and TJ McGowan (7 Slim Mediums at FFC). Equipment placements are a strong predictor of sustained volume.',sentiment:'info',tag:'Equip Impact'}
+    ],
+    risk:[
+      {title:'Travel segment is a mounting risk to goal',body:'Travel is the only segment with a majority of NCRAMs below PY. Rudy Wagner (-77.5%), TJ McGowan (-52.5%), and Josh Queja (-29.5%) are the biggest drags. If Travel does not recover in Q1, the team will likely miss the 12% growth goal for this segment.',sentiment:'negative',tag:'Risk Alert'},
+      {title:'Carroll Jenkins Southeast pipeline is underutilized',body:'Carroll Jenkins has 960 vending touchpoints and won 6 fitness chain accounts but ranks last on the KPI scorecard. The Southeast has strong infrastructure for a strong Q2 - targeted coaching on BD and chain win activity could unlock significant output.',sentiment:'info',tag:'Opportunity'},
+      {title:'West C and U has strong Q2 upside potential',body:'Jenny Lynch and Amy Quinet have both posted strong C and U gains (+56.0% and +4.3% respectively). The West region C and U total is +33.9% vs PY. With proper investment this segment could challenge Northeast as the top C and U region.',sentiment:'positive',tag:'Growth Lever'},
+      {title:'Rudy Wagner Vending surge needs validation',body:'Rudy Wagner posted a +71.9% increase in Vending (9,605 vs 5,586 PY) in January alone. While exceptional, a gain of this magnitude should be validated to confirm it reflects genuine distribution gains rather than a one-time load.',sentiment:'neutral',tag:'Validate'}
+    ]
+  };
+  renderInsights(D[curIF]||D.overall);
 }
 
 renderNat();
