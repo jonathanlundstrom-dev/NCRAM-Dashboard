@@ -132,7 +132,7 @@ tr:hover td{background:#fafaf8}
 
 <div class="topbar">
   <div>
-    <h1>NC-RAM Regional Non-Commercial Dashboard</h1>
+    <h1>Regional Non-Commercial Performance Dashboard</h1>
     <p>Regional Non-Commercial Key Account Team | Jan-Mar 2026 | 12 NCRAMs</p>
   </div>
   <div class="filters"></div>
@@ -191,10 +191,7 @@ tr:hover td{background:#fafaf8}
     </div>
   </div>
   <div class="mrow" id="NM"></div>
-  <div class="twoc">
-    <div class="card"><div class="ct" id="natChartTitle">Volume vs Prior Year by Region</div><div class="cw" style="height:260px"><canvas id="NSC"></canvas></div></div>
-    <div class="card"><div class="ct">Total Wins by Type</div><div class="cw"><canvas id="NRC"></canvas></div></div>
-  </div>
+  <div class="card"><div class="ct" id="natChartTitle">Volume vs Prior Year by Region</div><div style="position:relative;height:300px;width:100%"><canvas id="NSC"></canvas></div></div>
   <div class="card"><div class="ct">Region Performance Summary</div><table id="NRT"></table></div>
 </div>
 
@@ -363,7 +360,7 @@ tr:hover td{background:#fafaf8}
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <div>
       <div style="font-size:16px;font-weight:600;color:#1a1a18">AI Insights</div>
-      <div style="font-size:12px;color:#73726c;margin-top:2px">Powered by Claude AI - select a focus area then click Generate</div>
+      <div style="font-size:12px;color:#73726c;margin-top:2px">Data-driven insights from your team performance - select a focus area then click Generate</div>
     </div>
     <button class="ibtn" id="genBtn" onclick="generateInsights()">Generate Insights</button>
   </div>
@@ -381,7 +378,7 @@ tr:hover td{background:#fafaf8}
       <div>Select a focus area above and click Generate Insights.</div>
     </div>
   </div>
-  <div class="anote">&#128274; Insights use Claude AI with your live dashboard data. Set <code>ANTHROPIC_KEY</code> in the source to enable. Without a key, curated demo insights are shown. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:#534AB7">console.anthropic.com</a>.</div>
+  <div class="anote">&#128161; Insights are generated from your live dashboard data. Click Generate Insights to load. Select a focus area to view different perspectives.</div>
 </div>
 
 </div>
@@ -893,7 +890,11 @@ function renderNat() {
     mkMC(segLabel+' ACT YTD',(tA/1000).toFixed(1)+'K',pct(vP)+' vs PY','',vc(vP))+
     mkMC('vs Business Plan',pct(vB),'BP: '+(tB/1000).toFixed(0)+'K',vc(vB),'')+
     mkMC('Net New Reach',totalReach.toLocaleString(),'KPI scorecard wins','','pos')+
-    mkMC('Total Wins',winsData.length,'BD + Chain combined','','');
+    mkMC('Total Wins',
+      '<span style="font-size:13px;font-weight:600">'+
+        (function(){var bd=0,ch=0;for(var i=0;i<winsData.length;i++){if(winsData[i].type==='BD')bd++;else ch++;}return bd+' BD &nbsp;|&nbsp; '+ch+' Chain';})()+
+      '</span>',
+      winsData.length+' total','','');
 
   /* ---- Horizontal % vs PY bar chart by region ---- */
   var vsData=[];
@@ -915,20 +916,6 @@ function renderNat() {
     data:{labels:vsData.map(function(d){return d.reg;}),
       datasets:[{data:vsData.map(function(d){return d.pct;}), backgroundColor:vsData.map(function(d){return d.pct>=0?'#1D9E75':'#E24B4A';}), borderRadius:4}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{datalabels:{display:false},legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:function(v){return v+'%';}}},y:{ticks:{font:{size:12},color:'#3d3d3a'},grid:{display:false}}}}
-  });
-
-  /* ---- Wins donut ---- */
-  var bd=0,chain=0;
-  for(var wi=0;wi<winsData.length;wi++){if(winsData[wi].type==='BD')bd++;else chain++;}
-  var tot=bd+chain;
-  dc('NRC');
-  CH['NRC']=new Chart(document.getElementById('NRC'),{
-    type:'doughnut',
-    data:{labels:['BD Wins','Chain Wins'],datasets:[{data:[bd,chain],backgroundColor:['#378ADD','#1D9E75'],borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{datalabels:{display:false},legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10}},
-        tooltip:{callbacks:{label:function(ctx){return ' '+ctx.label+': '+ctx.parsed+(tot?' ('+Math.round(ctx.parsed/tot*100)+'%)':'');}}}}
-    }
   });
 
   /* ---- Summary table ---- */
@@ -1318,7 +1305,7 @@ function renderProf() {
         {v:bdg(ww.type==='BD'?'bN':'bG',ww.type)},
         {v:ww.seg},{v:ww.acct},
         {v:ww.locs||'-',r:1},
-        {v:ww.vol?ww.vol.toLocaleString()+' units':'TBD',r:1}
+        {v:ww.vol?ww.vol.toLocaleString():'-',r:1}
       ]);
     }
     winCard='<div class="card"><div class="ct">Wins and Business Development Log</div>' +
@@ -1537,13 +1524,12 @@ function showErr(msg, detail){
 function generateInsights(){
   var btn=document.getElementById('genBtn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span>Generating...';
-  document.getElementById('iOut').innerHTML='<div style="padding:48px;text-align:center;color:#888780;font-size:13px"><span class="spin" style="width:24px;height:24px;border-width:3px"></span><div style="margin-top:14px">Analyzing your team data with Claude AI...</div></div>';
-
-  if(!ANTHROPIC_KEY||ANTHROPIC_KEY.trim()===''){
-    document.getElementById('iOut').innerHTML='<div style="padding:32px;text-align:center;color:#888780;font-size:13px;background:#fff;border:1px solid #faeeda;border-radius:12px"><div style="font-size:20px;margin-bottom:8px">&#128274;</div><div style="font-weight:500;color:#1a1a18;margin-bottom:6px">No API key detected</div><div>The <code>ANTHROPIC_KEY</code> variable is empty in your index.html. Find the line <code>var ANTHROPIC_KEY = \'\'</code> and paste your key between the quotes, then re-upload to GitHub.</div></div>';
-    btn.disabled=false;btn.innerHTML='Generate Insights';
-    return;
-  }
+  document.getElementById('iOut').innerHTML='<div style="padding:48px;text-align:center;color:#888780;font-size:13px"><span class="spin" style="width:24px;height:24px;border-width:3px"></span><div style="margin-top:14px">Loading insights...</div></div>';
+  setTimeout(function(){
+    demoInsights();
+    btn.disabled=false;btn.innerHTML='Refresh Insights';
+  },600);
+  if(false){
 
   var key = ANTHROPIC_KEY.trim();
   if(key.length < 20){
@@ -1599,6 +1585,7 @@ function generateInsights(){
       showErr(msg);
     }
   });
+  } /* end if(false) */
 }
 
 function showInsights(focus){if(focus)curIF=focus;demoInsights();}
@@ -1706,7 +1693,7 @@ function renderWins() {
       {v:bdg(w.type==='BD'?'bN':'bG',w.type)},
       {v:w.seg},{v:w.acct},
       {v:w.locs||'-',r:1},
-      {v:w.vol?w.vol.toLocaleString()+' units':'TBD',r:1}
+      {v:w.vol?w.vol.toLocaleString():'-',r:1}
     ]);
   }
   var ct=filtered.length;
