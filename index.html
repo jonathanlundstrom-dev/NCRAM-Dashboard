@@ -879,7 +879,10 @@ function renderNat() {
   if(kpiKey==='jan'||kpiKey==='feb'||kpiKey==='mar'||kpiKey==='ytd_feb'||kpiKey==='ytd_mar'){}else{kpiKey='ytd_feb';}
   var kd=KPI[kpiKey]||KPI.ytd_feb;
   var totalReach=0;
-  for(var ki=0;ki<kd.length;ki++) totalReach+=kd[ki].reach||0;
+  for(var ki=0;ki<kd.length;ki++){
+    var kdRam=gr(kd[ki].n);
+    if(selRegs.indexOf(kdRam.reg)>=0) totalReach+=kd[ki].reach||0;
+  }
 
   var segNames={all:'All Segments',Big3:'Big 3',Vend:'Vending',CU:'C and U',Trvl:'Travel'};
   var segLabel=segNames[selSeg]||selSeg;
