@@ -158,6 +158,23 @@ tr:hover td{background:#fafaf8}
 
 
 /* Tighten NCRAM Scorecard Rankings table */
+#RRT{table-layout:fixed;width:100%}
+#RRT th{font-size:9px;font-weight:700;text-align:right;white-space:normal;line-height:1.25;vertical-align:bottom;padding:7px 12px;border-bottom:1px solid #e8e6de;color:#73726c;text-transform:uppercase;letter-spacing:.04em}
+#RRT th:nth-child(1){width:52px;text-align:center}
+#RRT th:nth-child(2){width:22%;text-align:left}
+#RRT th:nth-child(3),#RRT th:nth-child(4),#RRT th:nth-child(5),#RRT th:nth-child(6){width:12%;text-align:right}
+#RRT th:nth-child(7){width:14%;text-align:right}
+#RRT th:nth-child(8){width:9%;text-align:right}
+#RRT td{font-size:12px;padding:8px 12px;text-align:right;border-bottom:1px solid #f0ede6;vertical-align:middle}
+#RRT td:nth-child(1){text-align:center}
+#RRT td:nth-child(2){text-align:left}
+#RRT tr.rrt-reg{cursor:pointer;transition:background .1s}
+#RRT tr.rrt-reg:hover{background:#faf9f6}
+#RRT tr.rrt-reg td{font-weight:600;font-size:13px}
+#RRT tr.rrt-ncram td{background:#f7f6f2;font-size:11px;color:#5a5a57}
+#RRT tr.rrt-ncram td:nth-child(2){padding-left:28px}
+#RRT .rrt-chev{display:inline-block;transition:transform .2s;margin-left:4px;color:#888780;font-size:13px}
+#RRT .rrt-chev.open{transform:rotate(90deg)}
 #KRT{table-layout:fixed;width:100%}
 #KRT th,#KRT td{padding:7px 12px;box-sizing:border-box}
 #KRT th{font-size:9px;font-weight:700;text-align:center;white-space:normal;line-height:1.25;vertical-align:bottom}
@@ -199,12 +216,12 @@ tr:hover td{background:#fafaf8}
 <div class="tabs">
   
   <button class="tab active" onclick="goTab('kpi',this)">NCRAM Scorecard</button>
+  <button class="tab vptab" onclick="goTab('volume',this)">Volume Performance</button>
   
   
   
   <button class="tab ftab" onclick="goTab('fitness',this)">Focus Wave - Fitness</button>
   <button class="tab awtab" onclick="goTab('atwork',this)">Focus Wave - At Work</button>
-  <button class="tab vptab" onclick="goTab('volume',this)">Volume Performance</button>
   
 </div>
 
@@ -271,9 +288,9 @@ tr:hover td{background:#fafaf8}
     </div>
   </div>
   <div class="mrow" id="KM" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
-  <div class="card">
-    <div class="ct">NCRAM Scorecard Rankings</div>
-    <table id="KRT"></table>
+  <div class="card" style="margin-top:14px">
+    <div class="ct">Region Team Rankings <span style="font-size:10px;font-weight:400;color:#73726c">— click region to expand NCRAM detail</span></div>
+    <table id="RRT" style="width:100%;border-collapse:collapse;table-layout:fixed"></table>
   </div>
 
   <div class="card" style="margin-top:14px">
@@ -1392,6 +1409,97 @@ function getKPIData() {
 }
 function kpiDefault() { return KPI.roll_feb_mar_apr || KPI.feb || []; }
 
+var rrtExpanded = {};
+
+function rrtToggle(reg) {
+  rrtExpanded[reg] = !rrtExpanded[reg];
+  renderRRT();
+}
+
+function renderRRT() {
+  var el = document.getElementById('RRT');
+  if (!el) return;
+
+  var data = getKPIData();
+  var EXCLUDE = ['Open Role (SaMo)'];
+  var RC_LOCAL = {Central:'#378ADD',Midwest:'#1D9E75',Northeast:'#EF9F27',Southeast:'#E24B4A',West:'#7F77DD'};
+  var REGS_ORDER = ['Central','Midwest','Northeast','Southeast','West'];
+  var ordinals = ['1st','2nd','3rd','4th','5th'];
+
+  // Build region aggregates (excluding open roles)
+  var regMap = {};
+  REGS_ORDER.forEach(function(r){ regMap[r]={reg:r,bd:0,reach:0,equip:0,pipe:0,vend:0,scores:[],members:[]}; });
+  data.forEach(function(p){
+    if(EXCLUDE.indexOf(p.n)>=0) return;
+    var r=p.reg||gr(p.n).reg;
+    if(!regMap[r]) return;
+    regMap[r].bd+=p.bd||0; regMap[r].reach+=p.reach||0; regMap[r].equip+=p.equip||0;
+    regMap[r].pipe+=(p.pipe||0); regMap[r].vend+=p.vend||0;
+    regMap[r].scores.push(p.score||0);
+    regMap[r].members.push(p);
+  });
+
+  // Compute avg score and rank regions
+  var regs = REGS_ORDER.map(function(r){
+    var rm=regMap[r];
+    var avg=rm.scores.length ? Math.round(rm.scores.reduce(function(a,b){return a+b;},0)/rm.scores.length*10)/10 : 0;
+    return {reg:r,bd:rm.bd,reach:rm.reach,equip:rm.equip,pipe:rm.pipe,vend:rm.vend,avg:avg,members:rm.members.slice().sort(function(a,b){return a.score-b.score;})};
+  });
+  regs.sort(function(a,b){return a.avg-b.avg;});
+  regs.forEach(function(r,i){r.rank=i+1;});
+
+  var scoreColor=function(s,total){
+    var pct=s/total;
+    return pct<=0.4?'#1D9E75':pct<=0.7?'#EF9F27':'#E24B4A';
+  };
+
+  var html='<thead><tr>'
+    +'<th style="text-align:center">Rank</th>'
+    +'<th style="text-align:left">Region</th>'
+    +'<th>BD<br>Wins</th>'
+    +'<th>Reach</th>'
+    +'<th>Equipment</th>'
+    +'<th>Pipeline</th>'
+    +'<th>New Vending<br>Touchpoints</th>'
+    +'<th>Avg<br>Score</th>'
+    +'</tr></thead><tbody>';
+
+  regs.forEach(function(r){
+    var c=RC_LOCAL[r.reg]||'#888';
+    var sc=scoreColor(r.rank,regs.length);
+    var isOpen=!!rrtExpanded[r.reg];
+    html+='<tr class="rrt-reg" onclick="rrtToggle(\''+r.reg+'\')">'
+      +'<td><span class="rn">'+(ordinals[r.rank-1]||r.rank)+'</span></td>'
+      +'<td><span class="dot" style="background:'+c+';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle"></span>'
+      +r.reg+'<span class="rrt-chev'+(isOpen?' open':'')+'">›</span></td>'
+      +'<td>'+r.bd.toLocaleString()+'</td>'
+      +'<td>'+r.reach.toLocaleString()+'</td>'
+      +'<td>'+r.equip.toLocaleString()+'</td>'
+      +'<td>'+r.pipe.toLocaleString()+'</td>'
+      +'<td>'+r.vend.toLocaleString()+'</td>'
+      +'<td><strong style="color:'+sc+'">'+r.avg+'</strong></td>'
+      +'</tr>';
+
+    if(isOpen){
+      r.members.forEach(function(p,i){
+        html+='<tr class="rrt-ncram">'
+          +'<td></td>'
+          +'<td>'+p.n+'</td>'
+          +'<td>'+(p.bd||0)+'</td>'
+          +'<td>'+(p.reach||0)+'</td>'
+          +'<td>'+(p.equip||0)+'</td>'
+          +'<td>'+(p.pipe||0)+'</td>'
+          +'<td>'+((p.vend||0).toLocaleString())+'</td>'
+          +'<td></td>'
+          +'</tr>';
+      });
+    }
+  });
+
+  html+='</tbody>';
+  el.innerHTML=html;
+}
+
 function renderKPI() {
   var data = getKPIData();
   var selRegs = getChecked('kpi-reg');
@@ -1423,21 +1531,7 @@ function renderKPI() {
     mkMC('Cold Equip Placed',    tE, 'Placements', '', '') +
     mkMC('New Vending Touchpoints', tV.toLocaleString(), 'Won/Mapped', '', '');
 
-  var krows = '';
-  for(var j=0;j<data.length;j++){
-    var s=data[j], m=gr(s.n);
-    var rank=j+1;
-    var scoreColor = rank<=4 ? '#1D9E75' : rank<=8 ? '#EF9F27' : '#E24B4A';
-    krows += mkRow5([
-      {v:'<span class="rn">#'+rank+'</span>'},
-      {v:dot(m.c)+'<strong>'+s.n+'</strong>'},
-      {v:s.bd,r:1},{v:s.reach,r:1},{v:s.equip,r:1},
-      {v:s.pipe||0,r:1},
-      {v:(s.vend||0).toLocaleString(),r:1},
-      {v:'<strong style="color:'+scoreColor+'">'+s.score+'</strong>',r:1}
-    ]);
-  }
-  document.getElementById('KRT').innerHTML='<thead><tr><th>Rank</th><th style="text-align:left">NCRAM</th><th class="r">Business<br>Development</th><th class="r">Reach</th><th>Equipment</th><th class="r">Pipeline<br>Movement</th><th class="r">New Vending<br>Touchpoints</th><th class="r">Score</th></tr></thead><tbody>'+krows+'</tbody>';
+  renderRRT();
 
   var kcSorted = allData.slice().sort(function(a,b){return a.score-b.score;});
   var kcBarColors = kcSorted.map(function(s){ var m=gr(s.n); return m?m.c:'#888'; });
