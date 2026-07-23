@@ -169,13 +169,9 @@ tr:hover td{background:#fafaf8}
 #RRT td{font-size:12px;padding:8px 12px;text-align:right;border-bottom:1px solid #f0ede6;vertical-align:middle}
 #RRT td:nth-child(1){text-align:center}
 #RRT td:nth-child(2){text-align:left}
-#RRT tr.rrt-reg{cursor:pointer;transition:background .1s}
-#RRT tr.rrt-reg:hover{background:#faf9f6}
-#RRT tr.rrt-reg td{font-weight:600;font-size:13px}
-#RRT tr.rrt-ncram td{background:#f7f6f2;font-size:11px;color:#5a5a57}
-#RRT tr.rrt-ncram td:nth-child(2){padding-left:28px}
-#RRT .rrt-chev{display:inline-block;transition:transform .2s;margin-left:4px;color:#888780;font-size:13px}
-#RRT .rrt-chev.open{transform:rotate(90deg)}
+#RRT tr.rrt-ram{transition:background .1s}
+#RRT tr.rrt-ram:hover{background:#faf9f6}
+#RRT tr.rrt-ram td{font-size:13px}
 #KRT{table-layout:fixed;width:100%}
 #KRT th,#KRT td{padding:7px 12px;box-sizing:border-box}
 #KRT th{font-size:9px;font-weight:700;text-align:center;white-space:normal;line-height:1.25;vertical-align:bottom}
@@ -283,7 +279,7 @@ tr:hover td{background:#fafaf8}
           <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Montana Renno"  checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#EF9F27"></span>Montana Renno</span></label>
           <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Chris Trott"    checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#EF9F27"></span>Chris Trott</span></label>
           <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Carroll Jenkins" checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#E24B4A"></span>Carroll Jenkins</span></label>
-          <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Josh Queja"     checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#E24B4A"></span>Josh Queja</span></label>
+          <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Open Role (SE)"     checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#E24B4A"></span>Open Role (SE)</span></label>
           <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Kendall Braidic" checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#7F77DD"></span>Kendall Braidic</span></label>
           <label class="mchk-item"><input type="checkbox" class="kpi-ncram" value="Amy Quinet"     checked onchange="kpiNcramChanged()"><span><span class="dot" style="background:#7F77DD"></span>Amy Quinet</span></label>
         </div>
@@ -292,7 +288,7 @@ tr:hover td{background:#fafaf8}
   </div>
   <div class="mrow" id="KM" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
   <div class="card" style="margin-top:14px">
-    <div class="ct">Region Team Rankings <span style="font-size:10px;font-weight:400;color:#73726c">— click region to expand NCRAM detail</span></div>
+    <div class="ct">NCRAM Rankings <span style="font-size:10px;font-weight:400;color:#73726c">— all NCRAMs ranked 1&ndash;12 | lowest score is best</span></div>
     <table id="RRT" style="width:100%;border-collapse:collapse;table-layout:fixed"></table>
   </div>
 
@@ -539,7 +535,7 @@ var RAMS = [
   {n:'Montana Renno',  reg:'Northeast', ini:'MR', c:'#EF9F27'},
   {n:'Chris Trott',    reg:'Northeast', ini:'CT', c:'#EF9F27'},
   {n:'Carroll Jenkins',reg:'Southeast', ini:'CJ', c:'#E24B4A'},
-  {n:'Josh Queja',     reg:'Southeast', ini:'JQ', c:'#E24B4A'},
+  {n:'Open Role (SE)',  reg:'Southeast', ini:'OR', c:'#E24B4A'},
   {n:'Kendall Braidic', reg:'West', ini:'KB', c:'#7F77DD'},
   {n:'Amy Quinet',     reg:'West',      ini:'AQ', c:'#7F77DD'}
 ];
@@ -552,229 +548,215 @@ var SEGCOL = {Big3:'#378ADD',Vend:'#1D9E75',CU:'#EF9F27',Trvl:'#7F77DD'};
 
 var KPI = {
   feb: [
- {rank:1, n:"Sierra Ford", bd:4, chain:0, reach:53, equip:57, pipe:11, vend:668, score:26},
- {rank:2, n:"Amy Quinet", bd:4, chain:0, reach:19, equip:11, pipe:6, vend:1958, score:35},
- {rank:3, n:"Chris Trott", bd:4, chain:0, reach:15, equip:10, pipe:5, vend:3124, score:36},
- {rank:4, n:"Jenny Lynch", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:2193, score:37},
- {rank:5, n:"Rudy Wagner", bd:5, chain:0, reach:11, equip:17, pipe:3, vend:1681, score:43},
- {rank:6, n:"Katie Naviaux", bd:2, chain:0, reach:81, equip:13, pipe:3, vend:1755, score:44},
- {rank:7, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:1, pipe:5, vend:961, score:47},
- {rank:8, n:"Josh Queja", bd:4, chain:0, reach:15, equip:4, pipe:2, vend:2594, score:50},
- {rank:9, n:"Greg Drillock", bd:3, chain:0, reach:70, equip:4, pipe:5, vend:800, score:51},
- {rank:10, n:"Meg Flom", bd:2, chain:0, reach:14, equip:21, pipe:1, vend:2521, score:57},
- {rank:11, n:"Montana Renno", bd:3, chain:0, reach:6, equip:9, pipe:4, vend:475, score:71},
- {rank:12, n:"Carroll Jenkins", bd:1, chain:0, reach:2, equip:3, pipe:2, vend:960, score:89}
-],
+  {rank:1, n:"Sierra Ford", bd:4, chain:0, reach:53, equip:57, pipe:11, vend:668, score:42},
+  {rank:2, n:"Amy Quinet", bd:4, chain:0, reach:19, equip:11, pipe:6, vend:1958, score:49},
+  {rank:3, n:"Kendall Braidic", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:2193, score:51},
+  {rank:4, n:"Chris Trott", bd:4, chain:0, reach:15, equip:10, pipe:5, vend:3124, score:52},
+  {rank:5, n:"Katie Naviaux", bd:2, chain:0, reach:81, equip:13, pipe:3, vend:1755, score:54},
+  {rank:6, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:1, pipe:5, vend:961, score:55},
+  {rank:7, n:"Open Role (SE)", bd:4, chain:0, reach:15, equip:4, pipe:2, vend:2594, score:65},
+  {rank:8, n:"Greg Drillock", bd:3, chain:0, reach:70, equip:4, pipe:5, vend:800, score:66},
+  {rank:9, n:"Rudy Wagner", bd:5, chain:0, reach:11, equip:17, pipe:3, vend:1681, score:70},
+  {rank:10, n:"Meg Flom", bd:2, chain:0, reach:14, equip:21, pipe:1, vend:2521, score:73},
+  {rank:11, n:"Montana Renno", bd:3, chain:0, reach:6, equip:9, pipe:4, vend:475, score:86},
+  {rank:12, n:"Carroll Jenkins", bd:1, chain:0, reach:2, equip:3, pipe:2, vend:960, score:110}
+  ],
   mar: [
- {rank:1, n:"Chris Trott", bd:6, chain:0, reach:66, equip:16, pipe:11, vend:4, score:18},
- {rank:2, n:"Katie Naviaux", bd:8, chain:0, reach:2, equip:27, pipe:8, vend:15, score:22},
- {rank:3, n:"Amy Quinet", bd:6, chain:0, reach:2, equip:7, pipe:6, vend:0, score:39},
- {rank:4, n:"Sierra Ford", bd:2, chain:0, reach:13, equip:14, pipe:4, vend:0, score:40},
- {rank:5, n:"Meg Flom", bd:5, chain:0, reach:6, equip:4, pipe:4, vend:211, score:43},
- {rank:6, n:"Josh Queja", bd:4, chain:0, reach:0, equip:36, pipe:4, vend:0, score:46},
- {rank:6, n:"Jenny Lynch", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:46},
- {rank:8, n:"Greg Drillock", bd:2, chain:0, reach:11, equip:9, pipe:2, vend:0, score:49},
- {rank:9, n:"Carroll Jenkins", bd:5, chain:0, reach:2, equip:3, pipe:5, vend:0, score:51},
- {rank:10, n:"Rudy Wagner", bd:2, chain:0, reach:9, equip:2, pipe:4, vend:0, score:58},
- {rank:11, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:8, pipe:6, vend:0, score:67},
- {rank:12, n:"Montana Renno", bd:1, chain:0, reach:1, equip:4, pipe:2, vend:0, score:75}
-],
+  {rank:1, n:"Chris Trott", bd:6, chain:0, reach:66, equip:16, pipe:11, vend:4, score:31},
+  {rank:2, n:"Katie Naviaux", bd:8, chain:0, reach:2, equip:27, pipe:8, vend:15, score:34},
+  {rank:3, n:"Meg Flom", bd:5, chain:0, reach:6, equip:4, pipe:4, vend:211, score:49},
+  {rank:4, n:"Sierra Ford", bd:2, chain:0, reach:13, equip:14, pipe:4, vend:0, score:50},
+  {rank:5, n:"Amy Quinet", bd:6, chain:0, reach:2, equip:7, pipe:6, vend:0, score:51},
+  {rank:6, n:"Open Role (SE)", bd:4, chain:0, reach:0, equip:36, pipe:4, vend:0, score:54},
+  {rank:7, n:"Kendall Braidic", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:56},
+  {rank:8, n:"Greg Drillock", bd:2, chain:0, reach:11, equip:9, pipe:2, vend:0, score:59},
+  {rank:9, n:"Carroll Jenkins", bd:5, chain:0, reach:2, equip:3, pipe:5, vend:0, score:61},
+  {rank:10, n:"Rudy Wagner", bd:2, chain:0, reach:9, equip:2, pipe:4, vend:0, score:68},
+  {rank:11, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:8, pipe:6, vend:0, score:79},
+  {rank:12, n:"Montana Renno", bd:1, chain:0, reach:1, equip:4, pipe:2, vend:0, score:85}
+  ],
   apr: [
- {rank:1, n:"Chris Trott", bd:13, chain:0, reach:38, equip:18, pipe:16, vend:741, score:27},
- {rank:1, n:"Amy Quinet", bd:12, chain:0, reach:8, equip:24, pipe:9, vend:2114, score:27},
- {rank:3, n:"Greg Drillock", bd:7, chain:0, reach:68, equip:25, pipe:3, vend:1048, score:28},
- {rank:4, n:"Katie Naviaux", bd:7, chain:0, reach:38, equip:6, pipe:24, vend:1171, score:38},
- {rank:5, n:"Meg Flom", bd:12, chain:0, reach:7, equip:13, pipe:31, vend:0, score:41},
- {rank:5, n:"Sierra Ford", bd:4, chain:0, reach:18, equip:51, pipe:4, vend:1031, score:41},
- {rank:7, n:"Josh Queja", bd:7, chain:0, reach:5, equip:18, pipe:2, vend:0, score:52},
- {rank:8, n:"Rudy Wagner", bd:5, chain:0, reach:5, equip:9, pipe:4, vend:2697, score:53},
- {rank:9, n:"Montana Renno", bd:7, chain:0, reach:3, equip:7, pipe:3, vend:2231, score:54},
- {rank:10, n:"Carroll Jenkins", bd:4, chain:0, reach:1, equip:23, pipe:6, vend:488, score:60},
- {rank:11, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:1, pipe:1, vend:1068, score:82},
- {rank:12, n:"Jenny Lynch", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:92}
-],
+  {rank:1, n:"Chris Trott", bd:13, chain:0, reach:38, equip:18, pipe:16, vend:741, score:34},
+  {rank:2, n:"Greg Drillock", bd:7, chain:0, reach:68, equip:25, pipe:3, vend:1048, score:38},
+  {rank:3, n:"Amy Quinet", bd:12, chain:0, reach:8, equip:24, pipe:9, vend:2114, score:40},
+  {rank:4, n:"Katie Naviaux", bd:7, chain:0, reach:38, equip:6, pipe:24, vend:1171, score:48},
+  {rank:5, n:"Sierra Ford", bd:4, chain:0, reach:18, equip:51, pipe:4, vend:1031, score:49},
+  {rank:6, n:"Meg Flom", bd:12, chain:0, reach:7, equip:13, pipe:31, vend:0, score:54},
+  {rank:7, n:"Rudy Wagner", bd:5, chain:0, reach:5, equip:9, pipe:4, vend:2697, score:64},
+  {rank:8, n:"Open Role (SE)", bd:7, chain:0, reach:5, equip:18, pipe:2, vend:0, score:67},
+  {rank:9, n:"Montana Renno", bd:7, chain:0, reach:3, equip:7, pipe:3, vend:2231, score:69},
+  {rank:10, n:"Carroll Jenkins", bd:4, chain:0, reach:1, equip:23, pipe:6, vend:488, score:75},
+  {rank:11, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:1, pipe:1, vend:1068, score:95},
+  {rank:12, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:107}
+  ],
   may: [
- {rank:1, n:"Katie Naviaux", bd:6, chain:0, reach:6, equip:24, pipe:14, vend:300, score:24},
- {rank:2, n:"Chris Trott", bd:9, chain:0, reach:5, equip:27, pipe:9, vend:253, score:25},
- {rank:3, n:"Amy Quinet", bd:5, chain:0, reach:28, equip:23, pipe:12, vend:0, score:29},
- {rank:4, n:"Carroll Jenkins", bd:12, chain:0, reach:6, equip:7, pipe:7, vend:0, score:31},
- {rank:5, n:"Meg Flom", bd:8, chain:0, reach:13, equip:0, pipe:19, vend:0, score:37},
- {rank:6, n:"Sierra Ford", bd:2, chain:0, reach:3, equip:8, pipe:6, vend:2673, score:47},
- {rank:7, n:"Montana Renno", bd:6, chain:0, reach:1, equip:3, pipe:7, vend:2231, score:50},
- {rank:8, n:"Greg Drillock", bd:3, chain:0, reach:1, equip:7, pipe:2, vend:3879, score:51},
- {rank:9, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:60},
- {rank:10, n:"Rudy Wagner", bd:0, chain:0, reach:0, equip:20, pipe:1, vend:0, score:64},
- {rank:11, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:77},
- {rank:11, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:77}
-],
+  {rank:1, n:"Katie Naviaux", bd:6, chain:0, reach:6, equip:24, pipe:14, vend:300, score:18},
+  {rank:2, n:"Carroll Jenkins", bd:12, chain:0, reach:6, equip:7, pipe:7, vend:0, score:19},
+  {rank:2, n:"Chris Trott", bd:9, chain:0, reach:5, equip:27, pipe:9, vend:253, score:19},
+  {rank:4, n:"Amy Quinet", bd:5, chain:0, reach:28, equip:23, pipe:12, vend:0, score:20},
+  {rank:5, n:"Meg Flom", bd:8, chain:0, reach:13, equip:0, pipe:19, vend:0, score:21},
+  {rank:6, n:"Montana Renno", bd:6, chain:0, reach:1, equip:3, pipe:7, vend:2231, score:38},
+  {rank:7, n:"Sierra Ford", bd:2, chain:0, reach:3, equip:8, pipe:6, vend:2673, score:40},
+  {rank:8, n:"Greg Drillock", bd:3, chain:0, reach:1, equip:7, pipe:2, vend:3879, score:44},
+  {rank:9, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:46},
+  {rank:10, n:"Rudy Wagner", bd:0, chain:0, reach:0, equip:20, pipe:1, vend:0, score:54},
+  {rank:11, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:61},
+  {rank:11, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:61}
+  ],
   roll_feb_mar: [
- {rank:1, n:"Katie Naviaux", bd:10, chain:0, reach:83, equip:40, pipe:11, vend:15, score:14},
- {rank:2, n:"Chris Trott", bd:10, chain:0, reach:81, equip:26, pipe:16, vend:4, score:20},
- {rank:3, n:"Sierra Ford", bd:6, chain:0, reach:66, equip:71, pipe:15, vend:0, score:32},
- {rank:4, n:"Jenny Lynch", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:38},
- {rank:5, n:"Amy Quinet", bd:10, chain:0, reach:21, equip:18, pipe:12, vend:0, score:39},
- {rank:6, n:"Josh Queja", bd:8, chain:0, reach:15, equip:40, pipe:6, vend:0, score:46},
- {rank:7, n:"Rudy Wagner", bd:7, chain:0, reach:20, equip:19, pipe:7, vend:0, score:51},
- {rank:7, n:"Meg Flom", bd:7, chain:0, reach:20, equip:25, pipe:5, vend:211, score:51},
- {rank:9, n:"Greg Drillock", bd:5, chain:0, reach:81, equip:13, pipe:7, vend:0, score:53},
- {rank:10, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:9, pipe:11, vend:0, score:62},
- {rank:11, n:"Carroll Jenkins", bd:6, chain:0, reach:4, equip:6, pipe:7, vend:0, score:75},
- {rank:12, n:"Montana Renno", bd:4, chain:0, reach:7, equip:13, pipe:6, vend:0, score:78}
-],
+  {rank:1, n:"Katie Naviaux", bd:10, chain:0, reach:83, equip:40, pipe:11, vend:15, score:10},
+  {rank:2, n:"Chris Trott", bd:10, chain:0, reach:81, equip:26, pipe:16, vend:4, score:12},
+  {rank:3, n:"Amy Quinet", bd:10, chain:0, reach:21, equip:18, pipe:12, vend:0, score:27},
+  {rank:3, n:"Sierra Ford", bd:6, chain:0, reach:66, equip:71, pipe:15, vend:0, score:27},
+  {rank:5, n:"Kendall Braidic", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:30},
+  {rank:6, n:"Greg Drillock", bd:5, chain:0, reach:81, equip:13, pipe:7, vend:0, score:40},
+  {rank:6, n:"Open Role (SE)", bd:8, chain:0, reach:15, equip:40, pipe:6, vend:0, score:40},
+  {rank:6, n:"Rudy Wagner", bd:7, chain:0, reach:20, equip:19, pipe:7, vend:0, score:40},
+  {rank:9, n:"Meg Flom", bd:7, chain:0, reach:20, equip:25, pipe:5, vend:211, score:44},
+  {rank:10, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:9, pipe:11, vend:0, score:47},
+  {rank:11, n:"Carroll Jenkins", bd:6, chain:0, reach:4, equip:6, pipe:7, vend:0, score:59},
+  {rank:12, n:"Montana Renno", bd:4, chain:0, reach:7, equip:13, pipe:6, vend:0, score:65}
+  ],
   roll_feb_apr: [
- {rank:1, n:"Amy Quinet", bd:16, chain:0, reach:27, equip:35, pipe:15, vend:2114, score:29},
- {rank:2, n:"Chris Trott", bd:17, chain:0, reach:53, equip:28, pipe:21, vend:741, score:31},
- {rank:3, n:"Greg Drillock", bd:10, chain:0, reach:138, equip:29, pipe:8, vend:1048, score:32},
- {rank:4, n:"Sierra Ford", bd:8, chain:0, reach:71, equip:108, pipe:15, vend:1031, score:37},
- {rank:5, n:"Meg Flom", bd:14, chain:0, reach:21, equip:34, pipe:32, vend:0, score:39},
- {rank:6, n:"Katie Naviaux", bd:9, chain:0, reach:119, equip:19, pipe:27, vend:1171, score:44},
- {rank:7, n:"Rudy Wagner", bd:10, chain:0, reach:16, equip:26, pipe:7, vend:2697, score:51},
- {rank:8, n:"Montana Renno", bd:10, chain:0, reach:9, equip:16, pipe:7, vend:2231, score:62},
- {rank:9, n:"Josh Queja", bd:11, chain:0, reach:20, equip:22, pipe:4, vend:0, score:64},
- {rank:10, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:2, pipe:6, vend:1068, score:71},
- {rank:11, n:"Carroll Jenkins", bd:5, chain:0, reach:3, equip:26, pipe:8, vend:488, score:73},
- {rank:12, n:"Jenny Lynch", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:77}
-],
+  {rank:1, n:"Chris Trott", bd:17, chain:0, reach:53, equip:28, pipe:21, vend:741, score:18},
+  {rank:2, n:"Greg Drillock", bd:10, chain:0, reach:138, equip:29, pipe:8, vend:1048, score:22},
+  {rank:3, n:"Amy Quinet", bd:16, chain:0, reach:27, equip:35, pipe:15, vend:2114, score:24},
+  {rank:4, n:"Meg Flom", bd:14, chain:0, reach:21, equip:34, pipe:32, vend:0, score:26},
+  {rank:5, n:"Sierra Ford", bd:8, chain:0, reach:71, equip:108, pipe:15, vend:1031, score:29},
+  {rank:6, n:"Katie Naviaux", bd:9, chain:0, reach:119, equip:19, pipe:27, vend:1171, score:31},
+  {rank:7, n:"Rudy Wagner", bd:10, chain:0, reach:16, equip:26, pipe:7, vend:2697, score:44},
+  {rank:8, n:"Open Role (SE)", bd:11, chain:0, reach:20, equip:22, pipe:4, vend:0, score:46},
+  {rank:9, n:"Montana Renno", bd:10, chain:0, reach:9, equip:16, pipe:7, vend:2231, score:50},
+  {rank:10, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:2, pipe:6, vend:1068, score:54},
+  {rank:11, n:"Kendall Braidic", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:56},
+  {rank:12, n:"Carroll Jenkins", bd:5, chain:0, reach:3, equip:26, pipe:8, vend:488, score:58}
+  ],
   roll_feb_may: [
- {rank:1, n:"Katie Naviaux", bd:8, chain:0, reach:87, equip:37, pipe:17, vend:300, score:25},
- {rank:2, n:"Sierra Ford", bd:6, chain:0, reach:56, equip:65, pipe:17, vend:2673, score:27},
- {rank:3, n:"Chris Trott", bd:13, chain:0, reach:20, equip:37, pipe:14, vend:253, score:32},
- {rank:4, n:"Amy Quinet", bd:9, chain:0, reach:47, equip:34, pipe:18, vend:0, score:36},
- {rank:5, n:"Meg Flom", bd:10, chain:0, reach:27, equip:21, pipe:20, vend:0, score:39},
- {rank:6, n:"Greg Drillock", bd:6, chain:0, reach:71, equip:11, pipe:7, vend:3879, score:43},
- {rank:7, n:"Montana Renno", bd:9, chain:0, reach:7, equip:12, pipe:11, vend:2231, score:55},
- {rank:7, n:"Carroll Jenkins", bd:13, chain:0, reach:8, equip:10, pipe:9, vend:0, score:55},
- {rank:9, n:"Rudy Wagner", bd:5, chain:0, reach:11, equip:37, pipe:4, vend:0, score:59},
- {rank:10, n:"Jenny Lynch", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:65},
- {rank:11, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:1, pipe:5, vend:0, score:71},
- {rank:12, n:"Josh Queja", bd:4, chain:0, reach:15, equip:4, pipe:2, vend:0, score:82},
- {rank:13, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:92},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:104}
-],
+  {rank:1, n:"Katie Naviaux", bd:8, chain:0, reach:87, equip:37, pipe:17, vend:300, score:19},
+  {rank:2, n:"Sierra Ford", bd:6, chain:0, reach:56, equip:65, pipe:17, vend:2673, score:24},
+  {rank:3, n:"Amy Quinet", bd:9, chain:0, reach:47, equip:34, pipe:18, vend:0, score:25},
+  {rank:3, n:"Chris Trott", bd:13, chain:0, reach:20, equip:37, pipe:14, vend:253, score:25},
+  {rank:5, n:"Meg Flom", bd:10, chain:0, reach:27, equip:21, pipe:20, vend:0, score:27},
+  {rank:6, n:"Greg Drillock", bd:6, chain:0, reach:71, equip:11, pipe:7, vend:3879, score:34},
+  {rank:7, n:"Carroll Jenkins", bd:13, chain:0, reach:8, equip:10, pipe:9, vend:0, score:40},
+  {rank:8, n:"Montana Renno", bd:9, chain:0, reach:7, equip:12, pipe:11, vend:2231, score:45},
+  {rank:9, n:"Kendall Braidic", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:52},
+  {rank:10, n:"Open Role (SE)", bd:6, chain:0, reach:17, equip:9, pipe:4, vend:0, score:53},
+  {rank:10, n:"Rudy Wagner", bd:5, chain:0, reach:11, equip:37, pipe:4, vend:0, score:53},
+  {rank:10, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:1, pipe:5, vend:0, score:53}
+  ],
   roll_mar_apr: [
- {rank:1, n:"Chris Trott", bd:19, chain:0, reach:104, equip:34, pipe:27, vend:745, score:21},
- {rank:2, n:"Katie Naviaux", bd:15, chain:0, reach:40, equip:33, pipe:32, vend:1186, score:30},
- {rank:3, n:"Amy Quinet", bd:18, chain:0, reach:10, equip:31, pipe:15, vend:2114, score:37},
- {rank:4, n:"Greg Drillock", bd:9, chain:0, reach:79, equip:34, pipe:5, vend:1048, score:38},
- {rank:5, n:"Sierra Ford", bd:6, chain:0, reach:31, equip:65, pipe:8, vend:1031, score:43},
- {rank:6, n:"Meg Flom", bd:17, chain:0, reach:13, equip:17, pipe:35, vend:211, score:47},
- {rank:7, n:"Josh Queja", bd:11, chain:0, reach:5, equip:54, pipe:6, vend:0, score:50},
- {rank:8, n:"Rudy Wagner", bd:7, chain:0, reach:14, equip:11, pipe:8, vend:2697, score:55},
- {rank:9, n:"Carroll Jenkins", bd:9, chain:0, reach:3, equip:26, pipe:11, vend:488, score:60},
- {rank:10, n:"Montana Renno", bd:8, chain:0, reach:4, equip:11, pipe:5, vend:2231, score:66},
- {rank:11, n:"Jenny Lynch", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:83},
- {rank:12, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:9, pipe:7, vend:1068, score:85}
-],
+  {rank:1, n:"Chris Trott", bd:19, chain:0, reach:104, equip:34, pipe:27, vend:745, score:10},
+  {rank:2, n:"Katie Naviaux", bd:15, chain:0, reach:40, equip:33, pipe:32, vend:1186, score:21},
+  {rank:3, n:"Amy Quinet", bd:18, chain:0, reach:10, equip:31, pipe:15, vend:2114, score:28},
+  {rank:3, n:"Meg Flom", bd:17, chain:0, reach:13, equip:17, pipe:35, vend:211, score:28},
+  {rank:5, n:"Greg Drillock", bd:9, chain:0, reach:79, equip:34, pipe:5, vend:1048, score:29},
+  {rank:6, n:"Sierra Ford", bd:6, chain:0, reach:31, equip:65, pipe:8, vend:1031, score:35},
+  {rank:7, n:"Open Role (SE)", bd:11, chain:0, reach:5, equip:54, pipe:6, vend:0, score:37},
+  {rank:8, n:"Carroll Jenkins", bd:9, chain:0, reach:3, equip:26, pipe:11, vend:488, score:44},
+  {rank:8, n:"Rudy Wagner", bd:7, chain:0, reach:14, equip:11, pipe:8, vend:2697, score:44},
+  {rank:10, n:"Montana Renno", bd:8, chain:0, reach:4, equip:11, pipe:5, vend:2231, score:54},
+  {rank:11, n:"Kendall Braidic", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:64},
+  {rank:12, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:9, pipe:7, vend:1068, score:68}
+  ],
   roll_mar_may: [
- {rank:1, n:"Chris Trott", bd:15, chain:0, reach:71, equip:43, pipe:20, vend:257, score:18},
- {rank:2, n:"Katie Naviaux", bd:14, chain:0, reach:8, equip:51, pipe:22, vend:315, score:28},
- {rank:3, n:"Amy Quinet", bd:11, chain:0, reach:30, equip:30, pipe:18, vend:0, score:33},
- {rank:4, n:"Sierra Ford", bd:4, chain:0, reach:16, equip:22, pipe:10, vend:2673, score:42},
- {rank:5, n:"Carroll Jenkins", bd:17, chain:0, reach:8, equip:10, pipe:12, vend:0, score:46},
- {rank:6, n:"Meg Flom", bd:13, chain:0, reach:19, equip:4, pipe:23, vend:211, score:47},
- {rank:7, n:"Greg Drillock", bd:5, chain:0, reach:12, equip:16, pipe:4, vend:3879, score:51},
- {rank:8, n:"Rudy Wagner", bd:2, chain:0, reach:9, equip:22, pipe:5, vend:0, score:60},
- {rank:9, n:"Montana Renno", bd:7, chain:0, reach:2, equip:7, pipe:9, vend:2231, score:62},
- {rank:10, n:"Josh Queja", bd:4, chain:0, reach:0, equip:36, pipe:4, vend:0, score:63},
- {rank:11, n:"Jenny Lynch", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:71},
- {rank:12, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:84},
- {rank:13, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:8, pipe:6, vend:0, score:85},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:99}
-],
+  {rank:1, n:"Chris Trott", bd:15, chain:0, reach:71, equip:43, pipe:20, vend:257, score:11},
+  {rank:2, n:"Amy Quinet", bd:11, chain:0, reach:30, equip:30, pipe:18, vend:0, score:22},
+  {rank:3, n:"Katie Naviaux", bd:14, chain:0, reach:8, equip:51, pipe:22, vend:315, score:23},
+  {rank:4, n:"Meg Flom", bd:13, chain:0, reach:19, equip:4, pipe:23, vend:211, score:27},
+  {rank:5, n:"Carroll Jenkins", bd:17, chain:0, reach:8, equip:10, pipe:12, vend:0, score:30},
+  {rank:6, n:"Sierra Ford", bd:4, chain:0, reach:16, equip:22, pipe:10, vend:2673, score:37},
+  {rank:7, n:"Open Role (SE)", bd:6, chain:0, reach:2, equip:41, pipe:6, vend:0, score:43},
+  {rank:8, n:"Greg Drillock", bd:5, chain:0, reach:12, equip:16, pipe:4, vend:3879, score:45},
+  {rank:9, n:"Montana Renno", bd:7, chain:0, reach:2, equip:7, pipe:9, vend:2231, score:48},
+  {rank:10, n:"Rudy Wagner", bd:2, chain:0, reach:9, equip:22, pipe:5, vend:0, score:49},
+  {rank:11, n:"Kendall Braidic", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:57},
+  {rank:12, n:"TJ McGowan", bd:0, chain:0, reach:0, equip:8, pipe:6, vend:0, score:66}
+  ],
   roll_apr_may: [
- {rank:1, n:"Chris Trott", bd:22, chain:0, reach:43, equip:45, pipe:25, vend:994, score:25},
- {rank:2, n:"Amy Quinet", bd:17, chain:0, reach:36, equip:47, pipe:21, vend:2114, score:27},
- {rank:3, n:"Katie Naviaux", bd:13, chain:0, reach:44, equip:30, pipe:38, vend:1471, score:32},
- {rank:4, n:"Greg Drillock", bd:10, chain:0, reach:69, equip:32, pipe:5, vend:4927, score:33},
- {rank:5, n:"Sierra Ford", bd:6, chain:0, reach:21, equip:59, pipe:10, vend:3704, score:39},
- {rank:6, n:"Meg Flom", bd:20, chain:0, reach:20, equip:13, pipe:50, vend:0, score:45},
- {rank:7, n:"Carroll Jenkins", bd:16, chain:0, reach:7, equip:30, pipe:13, vend:488, score:46},
- {rank:8, n:"Montana Renno", bd:13, chain:0, reach:4, equip:10, pipe:10, vend:4462, score:58},
- {rank:9, n:"Rudy Wagner", bd:5, chain:0, reach:5, equip:29, pipe:5, vend:2697, score:62},
- {rank:10, n:"Josh Queja", bd:7, chain:0, reach:5, equip:18, pipe:2, vend:0, score:68},
- {rank:11, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:86},
- {rank:12, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:1, pipe:1, vend:1068, score:89},
- {rank:13, n:"Jenny Lynch", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:99},
- {rank:13, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:99}
-],
+  {rank:1, n:"Chris Trott", bd:22, chain:0, reach:43, equip:45, pipe:25, vend:994, score:14},
+  {rank:2, n:"Amy Quinet", bd:17, chain:0, reach:36, equip:47, pipe:21, vend:2114, score:20},
+  {rank:3, n:"Katie Naviaux", bd:13, chain:0, reach:44, equip:30, pipe:38, vend:1471, score:21},
+  {rank:4, n:"Meg Flom", bd:20, chain:0, reach:20, equip:13, pipe:50, vend:0, score:26},
+  {rank:5, n:"Greg Drillock", bd:10, chain:0, reach:69, equip:32, pipe:5, vend:4927, score:28},
+  {rank:6, n:"Carroll Jenkins", bd:16, chain:0, reach:7, equip:30, pipe:13, vend:488, score:32},
+  {rank:7, n:"Sierra Ford", bd:6, chain:0, reach:21, equip:59, pipe:10, vend:3704, score:35},
+  {rank:8, n:"Montana Renno", bd:13, chain:0, reach:4, equip:10, pipe:10, vend:4462, score:46},
+  {rank:9, n:"Open Role (SE)", bd:9, chain:0, reach:7, equip:23, pipe:4, vend:0, score:48},
+  {rank:10, n:"Rudy Wagner", bd:5, chain:0, reach:5, equip:29, pipe:5, vend:2697, score:53},
+  {rank:11, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:1, pipe:1, vend:1068, score:66},
+  {rank:12, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:70}
+  ],
   roll_feb_mar_apr: [
- {rank:1, n:"Katie Naviaux", bd:17, chain:0, reach:121, equip:46, pipe:35, vend:1186, score:24},
- {rank:2, n:"Chris Trott", bd:23, chain:0, reach:119, equip:44, pipe:32, vend:745, score:27},
- {rank:3, n:"Amy Quinet", bd:22, chain:0, reach:29, equip:42, pipe:21, vend:2114, score:35},
- {rank:4, n:"Sierra Ford", bd:10, chain:0, reach:84, equip:122, pipe:19, vend:1031, score:40},
- {rank:5, n:"Greg Drillock", bd:12, chain:0, reach:149, equip:38, pipe:10, vend:1048, score:41},
- {rank:6, n:"Meg Flom", bd:19, chain:0, reach:27, equip:38, pipe:36, vend:211, score:45},
- {rank:7, n:"Josh Queja", bd:15, chain:0, reach:20, equip:58, pipe:8, vend:0, score:56},
- {rank:8, n:"Rudy Wagner", bd:12, chain:0, reach:25, equip:28, pipe:11, vend:2697, score:57},
- {rank:9, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:10, pipe:12, vend:1068, score:70},
- {rank:10, n:"Montana Renno", bd:11, chain:0, reach:10, equip:20, pipe:9, vend:2231, score:72},
- {rank:11, n:"Carroll Jenkins", bd:10, chain:0, reach:5, equip:29, pipe:13, vend:488, score:73},
- {rank:12, n:"Jenny Lynch", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:74}
-],
+  {rank:1, n:"Chris Trott", bd:23, chain:0, reach:119, equip:44, pipe:32, vend:745, score:15},
+  {rank:2, n:"Katie Naviaux", bd:17, chain:0, reach:121, equip:46, pipe:35, vend:1186, score:17},
+  {rank:3, n:"Amy Quinet", bd:22, chain:0, reach:29, equip:42, pipe:21, vend:2114, score:27},
+  {rank:4, n:"Greg Drillock", bd:12, chain:0, reach:149, equip:38, pipe:10, vend:1048, score:29},
+  {rank:4, n:"Meg Flom", bd:19, chain:0, reach:27, equip:38, pipe:36, vend:211, score:29},
+  {rank:6, n:"Sierra Ford", bd:10, chain:0, reach:84, equip:122, pipe:19, vend:1031, score:32},
+  {rank:7, n:"Open Role (SE)", bd:15, chain:0, reach:20, equip:58, pipe:8, vend:0, score:43},
+  {rank:8, n:"Rudy Wagner", bd:12, chain:0, reach:25, equip:28, pipe:11, vend:2697, score:47},
+  {rank:9, n:"Kendall Braidic", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:53},
+  {rank:9, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:10, pipe:12, vend:1068, score:53},
+  {rank:11, n:"Carroll Jenkins", bd:10, chain:0, reach:5, equip:29, pipe:13, vend:488, score:56},
+  {rank:12, n:"Montana Renno", bd:11, chain:0, reach:10, equip:20, pipe:9, vend:2231, score:59}
+  ],
   roll_feb_mar_may: [
- {rank:1, n:"Katie Naviaux", bd:16, chain:0, reach:89, equip:64, pipe:25, vend:315, score:17},
- {rank:2, n:"Chris Trott", bd:19, chain:0, reach:86, equip:53, pipe:25, vend:257, score:18},
- {rank:3, n:"Sierra Ford", bd:8, chain:0, reach:69, equip:79, pipe:21, vend:2673, score:31},
- {rank:4, n:"Amy Quinet", bd:15, chain:0, reach:49, equip:41, pipe:24, vend:0, score:38},
- {rank:5, n:"Greg Drillock", bd:8, chain:0, reach:82, equip:20, pipe:9, vend:3879, score:48},
- {rank:6, n:"Meg Flom", bd:15, chain:0, reach:33, equip:25, pipe:24, vend:211, score:49},
- {rank:7, n:"Jenny Lynch", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:61},
- {rank:7, n:"Carroll Jenkins", bd:18, chain:0, reach:10, equip:13, pipe:14, vend:0, score:61},
- {rank:9, n:"Josh Queja", bd:8, chain:0, reach:15, equip:40, pipe:6, vend:0, score:63},
- {rank:10, n:"Montana Renno", bd:10, chain:0, reach:8, equip:16, pipe:13, vend:2231, score:66},
- {rank:11, n:"Rudy Wagner", bd:7, chain:0, reach:20, equip:39, pipe:8, vend:0, score:67},
- {rank:12, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:9, pipe:11, vend:0, score:77},
- {rank:13, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:98},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:105}
-],
+  {rank:1, n:"Chris Trott", bd:19, chain:0, reach:86, equip:53, pipe:25, vend:257, score:10},
+  {rank:2, n:"Katie Naviaux", bd:16, chain:0, reach:89, equip:64, pipe:25, vend:315, score:11},
+  {rank:3, n:"Amy Quinet", bd:15, chain:0, reach:49, equip:41, pipe:24, vend:0, score:28},
+  {rank:4, n:"Sierra Ford", bd:8, chain:0, reach:69, equip:79, pipe:21, vend:2673, score:30},
+  {rank:5, n:"Meg Flom", bd:15, chain:0, reach:33, equip:25, pipe:24, vend:211, score:35},
+  {rank:6, n:"Greg Drillock", bd:8, chain:0, reach:82, equip:20, pipe:9, vend:3879, score:40},
+  {rank:7, n:"Carroll Jenkins", bd:18, chain:0, reach:10, equip:13, pipe:14, vend:0, score:43},
+  {rank:8, n:"Open Role (SE)", bd:10, chain:0, reach:17, equip:45, pipe:8, vend:0, score:46},
+  {rank:9, n:"Kendall Braidic", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:47},
+  {rank:10, n:"Montana Renno", bd:10, chain:0, reach:8, equip:16, pipe:13, vend:2231, score:53},
+  {rank:11, n:"Rudy Wagner", bd:7, chain:0, reach:20, equip:39, pipe:8, vend:0, score:54},
+  {rank:12, n:"TJ McGowan", bd:5, chain:0, reach:40, equip:9, pipe:11, vend:0, score:58}
+  ],
   roll_feb_apr_may: [
- {rank:1, n:"Chris Trott", bd:26, chain:0, reach:58, equip:55, pipe:30, vend:994, score:27},
- {rank:2, n:"Amy Quinet", bd:21, chain:0, reach:55, equip:58, pipe:27, vend:2114, score:29},
- {rank:3, n:"Sierra Ford", bd:10, chain:0, reach:74, equip:116, pipe:21, vend:3704, score:34},
- {rank:3, n:"Katie Naviaux", bd:15, chain:0, reach:125, equip:43, pipe:41, vend:1471, score:34},
- {rank:5, n:"Greg Drillock", bd:13, chain:0, reach:139, equip:36, pipe:10, vend:4927, score:37},
- {rank:6, n:"Meg Flom", bd:22, chain:0, reach:34, equip:34, pipe:51, vend:0, score:45},
- {rank:7, n:"Rudy Wagner", bd:10, chain:0, reach:16, equip:46, pipe:8, vend:2697, score:59},
- {rank:8, n:"Montana Renno", bd:16, chain:0, reach:10, equip:19, pipe:14, vend:4462, score:61},
- {rank:9, n:"Carroll Jenkins", bd:17, chain:0, reach:9, equip:33, pipe:15, vend:488, score:63},
- {rank:10, n:"Josh Queja", bd:11, chain:0, reach:20, equip:22, pipe:4, vend:0, score:74},
- {rank:11, n:"Jenny Lynch", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:79},
- {rank:11, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:2, pipe:6, vend:1068, score:79},
- {rank:13, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:99},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:108}
-],
+  {rank:1, n:"Chris Trott", bd:26, chain:0, reach:58, equip:55, pipe:30, vend:994, score:16},
+  {rank:2, n:"Amy Quinet", bd:21, chain:0, reach:55, equip:58, pipe:27, vend:2114, score:22},
+  {rank:3, n:"Katie Naviaux", bd:15, chain:0, reach:125, equip:43, pipe:41, vend:1471, score:23},
+  {rank:4, n:"Meg Flom", bd:22, chain:0, reach:34, equip:34, pipe:51, vend:0, score:28},
+  {rank:5, n:"Greg Drillock", bd:13, chain:0, reach:139, equip:36, pipe:10, vend:4927, score:30},
+  {rank:5, n:"Sierra Ford", bd:10, chain:0, reach:74, equip:116, pipe:21, vend:3704, score:30},
+  {rank:7, n:"Carroll Jenkins", bd:17, chain:0, reach:9, equip:33, pipe:15, vend:488, score:46},
+  {rank:8, n:"Montana Renno", bd:16, chain:0, reach:10, equip:19, pipe:14, vend:4462, score:49},
+  {rank:9, n:"Open Role (SE)", bd:13, chain:0, reach:22, equip:27, pipe:6, vend:0, score:51},
+  {rank:9, n:"Rudy Wagner", bd:10, chain:0, reach:16, equip:46, pipe:8, vend:2697, score:51},
+  {rank:11, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:2, pipe:6, vend:1068, score:58},
+  {rank:12, n:"Kendall Braidic", bd:4, chain:0, reach:49, equip:8, pipe:5, vend:0, score:59}
+  ],
   roll_mar_apr_may: [
- {rank:1, n:"Chris Trott", bd:28, chain:0, reach:109, equip:61, pipe:36, vend:998, score:19},
- {rank:2, n:"Katie Naviaux", bd:21, chain:0, reach:46, equip:57, pipe:46, vend:1486, score:28},
- {rank:3, n:"Amy Quinet", bd:23, chain:0, reach:38, equip:54, pipe:27, vend:2114, score:31},
- {rank:4, n:"Sierra Ford", bd:8, chain:0, reach:34, equip:73, pipe:14, vend:3704, score:39},
- {rank:5, n:"Greg Drillock", bd:12, chain:0, reach:80, equip:41, pipe:7, vend:4927, score:40},
- {rank:6, n:"Meg Flom", bd:25, chain:0, reach:26, equip:17, pipe:54, vend:211, score:47},
- {rank:7, n:"Carroll Jenkins", bd:21, chain:0, reach:9, equip:33, pipe:18, vend:488, score:52},
- {rank:8, n:"Montana Renno", bd:14, chain:0, reach:5, equip:14, pipe:12, vend:4462, score:61},
- {rank:9, n:"Rudy Wagner", bd:7, chain:0, reach:14, equip:31, pipe:9, vend:2697, score:62},
- {rank:10, n:"Josh Queja", bd:11, chain:0, reach:5, equip:54, pipe:6, vend:0, score:64},
- {rank:11, n:"Jenny Lynch", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:85},
- {rank:12, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:9, pipe:7, vend:1068, score:90},
- {rank:13, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:96},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:107}
-],
+  {rank:1, n:"Chris Trott", bd:28, chain:0, reach:109, equip:61, pipe:36, vend:998, score:9},
+  {rank:2, n:"Katie Naviaux", bd:21, chain:0, reach:46, equip:57, pipe:46, vend:1486, score:20},
+  {rank:3, n:"Amy Quinet", bd:23, chain:0, reach:38, equip:54, pipe:27, vend:2114, score:23},
+  {rank:4, n:"Meg Flom", bd:25, chain:0, reach:26, equip:17, pipe:54, vend:211, score:27},
+  {rank:5, n:"Sierra Ford", bd:8, chain:0, reach:34, equip:73, pipe:14, vend:3704, score:35},
+  {rank:6, n:"Carroll Jenkins", bd:21, chain:0, reach:9, equip:33, pipe:18, vend:488, score:36},
+  {rank:6, n:"Greg Drillock", bd:12, chain:0, reach:80, equip:41, pipe:7, vend:4927, score:36},
+  {rank:8, n:"Open Role (SE)", bd:13, chain:0, reach:7, equip:59, pipe:8, vend:0, score:44},
+  {rank:9, n:"Montana Renno", bd:14, chain:0, reach:5, equip:14, pipe:12, vend:4462, score:50},
+  {rank:9, n:"Rudy Wagner", bd:7, chain:0, reach:14, equip:31, pipe:9, vend:2697, score:50},
+  {rank:11, n:"Kendall Braidic", bd:3, chain:0, reach:2, equip:19, pipe:3, vend:0, score:65},
+  {rank:12, n:"TJ McGowan", bd:2, chain:0, reach:0, equip:9, pipe:7, vend:1068, score:70}
+  ],
   roll_feb_mar_apr_may: [
- {rank:1, n:"Chris Trott", bd:32, chain:0, reach:124, equip:71, pipe:41, vend:998, score:23},
- {rank:2, n:"Katie Naviaux", bd:23, chain:0, reach:127, equip:70, pipe:49, vend:1486, score:26},
- {rank:3, n:"Amy Quinet", bd:27, chain:0, reach:57, equip:65, pipe:33, vend:2114, score:31},
- {rank:4, n:"Sierra Ford", bd:12, chain:0, reach:87, equip:130, pipe:25, vend:3704, score:36},
- {rank:5, n:"Greg Drillock", bd:15, chain:0, reach:150, equip:45, pipe:12, vend:4927, score:39},
- {rank:6, n:"Meg Flom", bd:27, chain:0, reach:40, equip:38, pipe:55, vend:211, score:45},
- {rank:7, n:"Rudy Wagner", bd:12, chain:0, reach:25, equip:48, pipe:12, vend:2697, score:60},
- {rank:8, n:"Montana Renno", bd:17, chain:0, reach:11, equip:23, pipe:16, vend:4462, score:65},
- {rank:8, n:"Carroll Jenkins", bd:22, chain:0, reach:11, equip:36, pipe:20, vend:488, score:65},
- {rank:10, n:"Josh Queja", bd:15, chain:0, reach:20, equip:58, pipe:8, vend:0, score:66},
- {rank:11, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:10, pipe:12, vend:1068, score:75},
- {rank:12, n:"Jenny Lynch", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:76},
- {rank:13, n:"Open Role (SE)", bd:2, chain:0, reach:2, equip:5, pipe:2, vend:0, score:102},
- {rank:14, n:"Kendall Braidic", bd:0, chain:0, reach:0, equip:0, pipe:0, vend:0, score:109}
-],
+  {rank:1, n:"Chris Trott", bd:32, chain:0, reach:124, equip:71, pipe:41, vend:998, score:13},
+  {rank:2, n:"Katie Naviaux", bd:23, chain:0, reach:127, equip:70, pipe:49, vend:1486, score:17},
+  {rank:3, n:"Amy Quinet", bd:27, chain:0, reach:57, equip:65, pipe:33, vend:2114, score:22},
+  {rank:4, n:"Meg Flom", bd:27, chain:0, reach:40, equip:38, pipe:55, vend:211, score:27},
+  {rank:5, n:"Sierra Ford", bd:12, chain:0, reach:87, equip:130, pipe:25, vend:3704, score:32},
+  {rank:6, n:"Greg Drillock", bd:15, chain:0, reach:150, equip:45, pipe:12, vend:4927, score:33},
+  {rank:7, n:"Carroll Jenkins", bd:22, chain:0, reach:11, equip:36, pipe:20, vend:488, score:47},
+  {rank:8, n:"Open Role (SE)", bd:17, chain:0, reach:22, equip:63, pipe:10, vend:0, score:48},
+  {rank:9, n:"Rudy Wagner", bd:12, chain:0, reach:25, equip:48, pipe:12, vend:2697, score:50},
+  {rank:10, n:"Montana Renno", bd:17, chain:0, reach:11, equip:23, pipe:16, vend:4462, score:52},
+  {rank:11, n:"Kendall Braidic", bd:7, chain:0, reach:51, equip:27, pipe:8, vend:0, score:56},
+  {rank:11, n:"TJ McGowan", bd:7, chain:0, reach:40, equip:10, pipe:12, vend:1068, score:56}
+  ],
 };;
 var VOL = [
   {ram:'Sierra Ford',   reg:'Central',  seg:'Big3',month:'jan',py:5241, act:5870, bp:6027.15, goal:.15},
@@ -849,22 +831,22 @@ var VOL = [
   {ram:'Carroll Jenkins',reg:'Southeast',seg:'CU',  month:'feb',py:2940,act:3484, bp:3234.0,  goal:.10},
   {ram:'Carroll Jenkins',reg:'Southeast',seg:'Trvl',month:'jan',py:829, act:935,  bp:928.48,  goal:.12},
   {ram:'Carroll Jenkins',reg:'Southeast',seg:'Trvl',month:'feb',py:1561,act:1829, bp:1748.32, goal:.12},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Big3',month:'jan',py:3044, act:3711, bp:3500.6,  goal:.15},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Big3',month:'feb',py:5697, act:6898, bp:6551.55, goal:.15},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Vend',month:'jan',py:3981, act:5192, bp:4578.15, goal:.15},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Vend',month:'feb',py:9120, act:10414,bp:10488.0, goal:.15},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'CU',  month:'jan',py:4637, act:4887, bp:5100.7,  goal:.10},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'CU',  month:'feb',py:4637, act:4887, bp:5100.7,  goal:.10},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Trvl',month:'jan',py:1145, act:807,  bp:1282.4,  goal:.12},
-  {ram:'Josh Queja',    reg:'Southeast',seg:'Trvl',month:'feb',py:1934, act:1680, bp:2166.08, goal:.12},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Big3',month:'jan',py:3226, act:4289, bp:3709.9,  goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Big3',month:'feb',py:6085, act:7862, bp:6997.75, goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Vend',month:'jan',py:5110, act:5569, bp:5876.5,  goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Vend',month:'feb',py:9542, act:10953,bp:10973.3, goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'CU',  month:'jan',py:7519, act:10683,bp:8270.9,  goal:.10},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'CU',  month:'feb',py:7519, act:10683,bp:8270.9,  goal:.10},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Trvl',month:'jan',py:1430, act:1051, bp:1601.6,  goal:.12},
-  {ram:'Open Role (SaMo)',   reg:'West',     seg:'Trvl',month:'feb',py:2516, act:1996, bp:2817.92, goal:.12},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Big3',month:'jan',py:3044, act:3711, bp:3500.6,  goal:.15},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Big3',month:'feb',py:5697, act:6898, bp:6551.55, goal:.15},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Vend',month:'jan',py:3981, act:5192, bp:4578.15, goal:.15},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Vend',month:'feb',py:9120, act:10414,bp:10488.0, goal:.15},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'CU',  month:'jan',py:4637, act:4887, bp:5100.7,  goal:.10},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'CU',  month:'feb',py:4637, act:4887, bp:5100.7,  goal:.10},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Trvl',month:'jan',py:1145, act:807,  bp:1282.4,  goal:.12},
+  {ram:'Open Role (SE)',    reg:'Southeast',seg:'Trvl',month:'feb',py:1934, act:1680, bp:2166.08, goal:.12},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Big3',month:'jan',py:3226, act:4289, bp:3709.9,  goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Big3',month:'feb',py:6085, act:7862, bp:6997.75, goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Vend',month:'jan',py:5110, act:5569, bp:5876.5,  goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Vend',month:'feb',py:9542, act:10953,bp:10973.3, goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'CU',  month:'jan',py:7519, act:10683,bp:8270.9,  goal:.10},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'CU',  month:'feb',py:7519, act:10683,bp:8270.9,  goal:.10},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Trvl',month:'jan',py:1430, act:1051, bp:1601.6,  goal:.12},
+  {ram:'Kendall Braidic',   reg:'West',     seg:'Trvl',month:'feb',py:2516, act:1996, bp:2817.92, goal:.12},
   {ram:'Amy Quinet',    reg:'West',     seg:'Big3',month:'jan',py:5793, act:4938, bp:6661.95, goal:.15},
   {ram:'Amy Quinet',    reg:'West',     seg:'Big3',month:'feb',py:11933,act:8970, bp:13722.95,goal:.15},
   {ram:'Amy Quinet',    reg:'West',     seg:'Vend',month:'jan',py:8228, act:9149, bp:9462.2,  goal:.15},
@@ -889,14 +871,14 @@ var VOL = [
   {ram:'Greg Drillock',   reg:'Northeast',  seg:'Vend',month:'mar',py:17237, act:19877, bp:19822.55, goal:.15},
   {ram:'Greg Drillock',   reg:'Northeast',  seg:'CU',month:'mar',py:2976, act:3624, bp:3273.6, goal:.10},
   {ram:'Greg Drillock',   reg:'Northeast',  seg:'Trvl',month:'mar',py:2363, act:2070, bp:2646.56, goal:.12},
-  {ram:'Open Role (SaMo)',   reg:'West',  seg:'Big3',month:'mar',py:8920, act:11025, bp:10258, goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',  seg:'Vend',month:'mar',py:14434, act:17491, bp:16599.1, goal:.15},
-  {ram:'Open Role (SaMo)',   reg:'West',  seg:'CU',month:'mar',py:11813, act:16166, bp:12994.3, goal:.10},
-  {ram:'Open Role (SaMo)',   reg:'West',  seg:'Trvl',month:'mar',py:4091, act:3445, bp:4581.92, goal:.12},
-  {ram:'Josh Queja',   reg:'Southeast',  seg:'Big3',month:'mar',py:8041, act:9393, bp:9247.15, goal:.15},
-  {ram:'Josh Queja',   reg:'Southeast',  seg:'Vend',month:'mar',py:12438, act:14352, bp:14303.7, goal:.15},
-  {ram:'Josh Queja',   reg:'Southeast',  seg:'CU',month:'mar',py:6729, act:7508, bp:7401.9, goal:.10},
-  {ram:'Josh Queja',   reg:'Southeast',  seg:'Trvl',month:'mar',py:3394, act:3463, bp:3801.28, goal:.12},
+  {ram:'Kendall Braidic',   reg:'West',  seg:'Big3',month:'mar',py:8920, act:11025, bp:10258, goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',  seg:'Vend',month:'mar',py:14434, act:17491, bp:16599.1, goal:.15},
+  {ram:'Kendall Braidic',   reg:'West',  seg:'CU',month:'mar',py:11813, act:16166, bp:12994.3, goal:.10},
+  {ram:'Kendall Braidic',   reg:'West',  seg:'Trvl',month:'mar',py:4091, act:3445, bp:4581.92, goal:.12},
+  {ram:'Open Role (SE)',   reg:'Southeast',  seg:'Big3',month:'mar',py:8041, act:9393, bp:9247.15, goal:.15},
+  {ram:'Open Role (SE)',   reg:'Southeast',  seg:'Vend',month:'mar',py:12438, act:14352, bp:14303.7, goal:.15},
+  {ram:'Open Role (SE)',   reg:'Southeast',  seg:'CU',month:'mar',py:6729, act:7508, bp:7401.9, goal:.10},
+  {ram:'Open Role (SE)',   reg:'Southeast',  seg:'Trvl',month:'mar',py:3394, act:3463, bp:3801.28, goal:.12},
   {ram:'Katie Naviaux',   reg:'',  seg:'Big3',month:'mar',py:9095, act:11953, bp:10459.25, goal:.15},
   {ram:'Katie Naviaux',   reg:'',  seg:'Vend',month:'mar',py:12983, act:13660, bp:14930.45, goal:.15},
   {ram:'Katie Naviaux',   reg:'',  seg:'CU',month:'mar',py:9194, act:11185, bp:10113.4, goal:.10},
@@ -936,14 +918,14 @@ var WINS = [
  {ram:"Greg Drillock", month:"feb", type:"BD", seg:"Travel", acct:"Villa Restaurant Group", locs:50, vol:500},
  {ram:"Greg Drillock", month:"feb", type:"BD", seg:"Travel", acct:"Villa Restaurant Group", locs:70, vol:1800},
  {ram:"Greg Drillock", month:"feb", type:"BD", seg:"B and I", acct:"Jane Street", locs:1, vol:250},
- {ram:"Jenny Lynch", month:"feb", type:"Business Development", seg:"Fitness", acct:"Mountainside Fitness", locs:22, vol:5000},
- {ram:"Jenny Lynch", month:"feb", type:"Business Development", seg:"Travel", acct:"Crews of California", locs:27, vol:5000},
- {ram:"Jenny Lynch", month:"feb", type:"BD", seg:"B and I", acct:"Eurest/BoA", locs:0, vol:0},
- {ram:"Jenny Lynch", month:"feb", type:"BD", seg:"Fitness", acct:"UFC Gyms", locs:0, vol:0},
- {ram:"Josh Queja", month:"feb", type:"Business Development", seg:"Fitness", acct:"Hylo Fitness", locs:4, vol:200},
- {ram:"Josh Queja", month:"feb", type:"Business Development", seg:"Fitness", acct:"Triangle Rock Club", locs:6, vol:200},
- {ram:"Josh Queja", month:"feb", type:"Business Development", seg:"Fitness", acct:"Inner Peak Climbing", locs:3, vol:200},
- {ram:"Josh Queja", month:"feb", type:"BD", seg:"Healthcare", acct:"Baptist Hospital", locs:2, vol:2800},
+ {ram:"Kendall Braidic", month:"feb", type:"Business Development", seg:"Fitness", acct:"Mountainside Fitness", locs:22, vol:5000},
+ {ram:"Kendall Braidic", month:"feb", type:"Business Development", seg:"Travel", acct:"Crews of California", locs:27, vol:5000},
+ {ram:"Kendall Braidic", month:"feb", type:"BD", seg:"B and I", acct:"Eurest/BoA", locs:0, vol:0},
+ {ram:"Kendall Braidic", month:"feb", type:"BD", seg:"Fitness", acct:"UFC Gyms", locs:0, vol:0},
+ {ram:"Open Role (SE)", month:"feb", type:"Business Development", seg:"Fitness", acct:"Hylo Fitness", locs:4, vol:200},
+ {ram:"Open Role (SE)", month:"feb", type:"Business Development", seg:"Fitness", acct:"Triangle Rock Club", locs:6, vol:200},
+ {ram:"Open Role (SE)", month:"feb", type:"Business Development", seg:"Fitness", acct:"Inner Peak Climbing", locs:3, vol:200},
+ {ram:"Open Role (SE)", month:"feb", type:"BD", seg:"Healthcare", acct:"Baptist Hospital", locs:2, vol:2800},
  {ram:"Katie Naviaux", month:"feb", type:"Business Development", seg:"Fitness", acct:"Vasa Fitness", locs:72, vol:2500},
  {ram:"Katie Naviaux", month:"feb", type:"Business Development", seg:"Fitness", acct:"Defined Fitness", locs:8, vol:500},
  {ram:"Meg Flom", month:"feb", type:"Business Development", seg:"Fitness", acct:"Powerhouse Gym", locs:14, vol:1000},
@@ -980,9 +962,9 @@ var WINS = [
  {ram:"Meg Flom", month:"mar", type:"BD", seg:"B and I", acct:"Cummins", locs:1, vol:400},
  {ram:"Meg Flom", month:"mar", type:"Business Development", seg:"Fitness", acct:"Indiana Fitness Clubs", locs:4, vol:225},
  {ram:"Meg Flom", month:"mar", type:"BD", seg:"Healthcare", acct:"Memorial Health Care - Owosso", locs:1, vol:250},
- {ram:"Jenny Lynch", month:"mar", type:"BD", seg:"Fitness", acct:"UFC Gyms", locs:6, vol:200},
- {ram:"Jenny Lynch", month:"mar", type:"BD", seg:"Travel", acct:"LAX, Crews of California", locs:9, vol:5000},
- {ram:"Jenny Lynch", month:"mar", type:"BD", seg:"Healthcare", acct:"Temecula Valley Hospital", locs:1, vol:500},
+ {ram:"Kendall Braidic", month:"mar", type:"BD", seg:"Fitness", acct:"UFC Gyms", locs:6, vol:200},
+ {ram:"Kendall Braidic", month:"mar", type:"BD", seg:"Travel", acct:"LAX, Crews of California", locs:9, vol:5000},
+ {ram:"Kendall Braidic", month:"mar", type:"BD", seg:"Healthcare", acct:"Temecula Valley Hospital", locs:1, vol:500},
  {ram:"Katie Naviaux", month:"mar", type:"BD", seg:"Healthcare", acct:"Ogden Regional Medical Center", locs:1, vol:200},
  {ram:"Katie Naviaux", month:"mar", type:"BD", seg:"Vending", acct:"Tanzie Vending", locs:1, vol:2000},
  {ram:"Katie Naviaux", month:"mar", type:"BD", seg:"Vending", acct:"Canteen Denver", locs:1, vol:3000},
@@ -995,9 +977,9 @@ var WINS = [
  {ram:"Chris Trott", month:"mar", type:"BD", seg:"Vending", acct:"Vistar NE Local Incentive", locs:32, vol:300},
  {ram:"Chris Trott", month:"mar", type:"Business Development", seg:"C and U", acct:"Univ. of New England (ME)", locs:2, vol:1000},
  {ram:"Chris Trott", month:"mar", type:"Business Development", seg:"Fitness", acct:"Planet Fitness (Fit Earth Franch)", locs:60, vol:600},
- {ram:"Josh Queja", month:"mar", type:"BD", seg:"B and I", acct:"Google", locs:12, vol:500},
- {ram:"Josh Queja", month:"mar", type:"BD", seg:"Vending", acct:"Pee Dee Vending", locs:36, vol:2000},
- {ram:"Josh Queja", month:"mar", type:"BD", seg:"B and I", acct:"Memphis FedEx", locs:7, vol:3000},
+ {ram:"Open Role (SE)", month:"mar", type:"BD", seg:"B and I", acct:"Google", locs:12, vol:500},
+ {ram:"Open Role (SE)", month:"mar", type:"BD", seg:"Vending", acct:"Pee Dee Vending", locs:36, vol:2000},
+ {ram:"Open Role (SE)", month:"mar", type:"BD", seg:"B and I", acct:"Memphis FedEx", locs:7, vol:3000},
  {ram:"Carroll Jenkins", month:"mar", type:"BD", seg:"Fitness", acct:"CR Fitness", locs:92, vol:2500},
  {ram:"Carroll Jenkins", month:"mar", type:"BD", seg:"Healthcare", acct:"Broward County Hospital", locs:1, vol:500},
  {ram:"Carroll Jenkins", month:"mar", type:"BD", seg:"B and I", acct:"UTI", locs:1, vol:200},
@@ -1033,13 +1015,13 @@ var WINS = [
  {ram:"Montana Renno", month:"apr", type:"BD", seg:"Vending", acct:"Canteen Martinsville", locs:1, vol:300},
  {ram:"Montana Renno", month:"apr", type:"BD", seg:"Healthcare", acct:"Sentara", locs:5, vol:100},
  {ram:"Montana Renno", month:"apr", type:"BD", seg:"Healthcare", acct:"UVA", locs:4, vol:250},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"Healthcare", acct:"Fort Sanders Hospital", locs:5, vol:500},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"Healthcare", acct:"Park West Medical", locs:3, vol:1000},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"B and I", acct:"Toyota battey Plant", locs:1, vol:3000},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"B and I", acct:"Bank of America", locs:1, vol:0},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"Healthcare", acct:"Wesley Long Hospital", locs:1, vol:0},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"B and I", acct:"Bridgestone HQ", locs:1, vol:0},
- {ram:"Josh Queja", month:"apr", type:"BD", seg:"B and I", acct:"Catapillar Financial", locs:1, vol:0},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"Healthcare", acct:"Fort Sanders Hospital", locs:5, vol:500},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"Healthcare", acct:"Park West Medical", locs:3, vol:1000},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"B and I", acct:"Toyota battey Plant", locs:1, vol:3000},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"B and I", acct:"Bank of America", locs:1, vol:0},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"Healthcare", acct:"Wesley Long Hospital", locs:1, vol:0},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"B and I", acct:"Bridgestone HQ", locs:1, vol:0},
+ {ram:"Open Role (SE)", month:"apr", type:"BD", seg:"B and I", acct:"Catapillar Financial", locs:1, vol:0},
  {ram:"Carroll Jenkins", month:"apr", type:"BD", seg:"B and I", acct:"L'Oreal", locs:1, vol:400},
  {ram:"Carroll Jenkins", month:"apr", type:"BD", seg:"Healthcare", acct:"Orlando Regional", locs:4, vol:2000},
  {ram:"Carroll Jenkins", month:"apr", type:"BD", seg:"B and I", acct:"Stryker", locs:1, vol:400},
@@ -1104,11 +1086,11 @@ var FIT = [
   {reg:'Southeast', ncram:'Carroll Jenkins',acct:'CR Fitness',                  chain:1,reach:1, skus:2, skuT:'ED, SF',                                eqT:'',             eqQ:0, acts:5},
   {reg:'Southeast', ncram:'Carroll Jenkins',acct:'Cressey Fitness',             chain:1,reach:2, skus:6, skuT:'ED, SF, SFRE, PE, SFSBE',               eqT:'Slim Medium',  eqQ:2, acts:0},
   {reg:'Southeast', ncram:'Carroll Jenkins',acct:'Miami Strong',                chain:1,reach:1, skus:3, skuT:'ED, SF, ZERO',                          eqT:'',             eqQ:0, acts:1},
-  {reg:'Southeast', ncram:'Josh Queja',     acct:'Hylo Fitness',                chain:1,reach:4, skus:5, skuT:'ED, SF, SFRE, SBE, AE',                 eqT:'Slim Medium',  eqQ:4, acts:4},
-  {reg:'Southeast', ncram:'Josh Queja',     acct:'Triangle Rock Club',          chain:1,reach:6, skus:5, skuT:'ED, SF, SFSBE, YE, SFAE',               eqT:'Baby Cooler',  eqQ:1, acts:1},
-  {reg:'Southeast', ncram:'Josh Queja',     acct:'Inner Peaks Climbing',        chain:1,reach:3, skus:6, skuT:'ED, SF, SFRE, ZERO, AE, SBE',           eqT:'Slim Medium',  eqQ:3, acts:3},
-  {reg:'West',      ncram:'Open Role (SaMo)',    acct:'Mountainside Fitness',        chain:1,reach:22,skus:3, skuT:'ED, SF, Zero',                          eqT:'',             eqQ:0, acts:0},
-  {reg:'West',      ncram:'Open Role (SaMo)',    acct:'UFC Gym',                     chain:1,reach:22,skus:4, skuT:'12ED, 8ED, SF, Zero',                   eqT:'Small GDC',    eqQ:6, acts:22},
+  {reg:'Southeast', ncram:'Open Role (SE)',     acct:'Hylo Fitness',                chain:1,reach:4, skus:5, skuT:'ED, SF, SFRE, SBE, AE',                 eqT:'Slim Medium',  eqQ:4, acts:4},
+  {reg:'Southeast', ncram:'Open Role (SE)',     acct:'Triangle Rock Club',          chain:1,reach:6, skus:5, skuT:'ED, SF, SFSBE, YE, SFAE',               eqT:'Baby Cooler',  eqQ:1, acts:1},
+  {reg:'Southeast', ncram:'Open Role (SE)',     acct:'Inner Peaks Climbing',        chain:1,reach:3, skus:6, skuT:'ED, SF, SFRE, ZERO, AE, SBE',           eqT:'Slim Medium',  eqQ:3, acts:3},
+  {reg:'West',      ncram:'Kendall Braidic',    acct:'Mountainside Fitness',        chain:1,reach:22,skus:3, skuT:'ED, SF, Zero',                          eqT:'',             eqQ:0, acts:0},
+  {reg:'West',      ncram:'Kendall Braidic',    acct:'UFC Gym',                     chain:1,reach:22,skus:4, skuT:'12ED, 8ED, SF, Zero',                   eqT:'Small GDC',    eqQ:6, acts:22},
   {reg:'West',      ncram:'Amy Quinet',     acct:'Bouldering Project',          chain:1,reach:1, skus:4, skuT:'ED, SF, Zero, Winter',                  eqT:'Mega Slim',    eqQ:2, acts:0},
   {reg:'Midwest',   ncram:'Meg Flom',       acct:'Powerhouse Gym',              chain:1,reach:14,skus:5, skuT:'ED, SF, TZ, SB, SF Pink',               eqT:'Mega Slim',    eqQ:14,acts:17},
   {reg:'Midwest',   ncram:'Meg Flom',       acct:'Indiana Fitness Club',        chain:1,reach:4, skus:2, skuT:'ED, SF',                                eqT:'',             eqQ:0, acts:0},
@@ -1187,17 +1169,17 @@ var ATWORK = [
  {reg:"Central", ncram:"Katie Naviaux", acct:"Keysight", chain:0, reach:0, skus:2, skuT:"Sea Blue, Yellow", eqT:"nan", eqQ:0, acts:1},
  {reg:"Central", ncram:"Katie Naviaux", acct:"Wells Fargo COB", chain:0, reach:0, skus:1, skuT:"Iced Vanilla Berry", eqT:"nan", eqQ:0, acts:0},
  {reg:"Central", ncram:"Katie Naviaux", acct:"Exyte Tent Services", chain:0, reach:0, skus:0, skuT:"nan", eqT:"Mega Slim", eqQ:3, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Bridgestone HQ", chain:1, reach:1, skus:4, skuT:"Key 3 + editions", eqT:"Mega Slim", eqQ:1, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Dollar General HQ", chain:1, reach:1, skus:4, skuT:"Juneberry", eqT:"Mega Slim", eqQ:1, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Geodis Park", chain:0, reach:0, skus:2, skuT:"juneberry, Strawberry Apricot", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Fedex HQ", chain:0, reach:0, skus:1, skuT:"Juneberry", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Google", chain:0, reach:0, skus:3, skuT:"Key 3 + editions", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Wellstar Cobb", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"MSC", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Lowes", chain:0, reach:0, skus:0, skuT:"nan", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Pfitzer", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"FedEx", chain:0, reach:0, skus:0, skuT:"nan", eqT:"nan", eqQ:0, acts:1},
- {reg:"Southeast", ncram:"Josh Queja", acct:"Nike", chain:0, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Bridgestone HQ", chain:1, reach:1, skus:4, skuT:"Key 3 + editions", eqT:"Mega Slim", eqQ:1, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Dollar General HQ", chain:1, reach:1, skus:4, skuT:"Juneberry", eqT:"Mega Slim", eqQ:1, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Geodis Park", chain:0, reach:0, skus:2, skuT:"juneberry, Strawberry Apricot", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Fedex HQ", chain:0, reach:0, skus:1, skuT:"Juneberry", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Google", chain:0, reach:0, skus:3, skuT:"Key 3 + editions", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Wellstar Cobb", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"MSC", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Lowes", chain:0, reach:0, skus:0, skuT:"nan", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Pfitzer", chain:1, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"FedEx", chain:0, reach:0, skus:0, skuT:"nan", eqT:"nan", eqQ:0, acts:1},
+ {reg:"Southeast", ncram:"Open Role (SE)", acct:"Nike", chain:0, reach:1, skus:5, skuT:"Key 3 + juneberry, Strawberry Apricot", eqT:"Mega Slim", eqQ:1, acts:1},
  {reg:"Southeast", ncram:"Carroll Jenkins", acct:"ORLANDO HEALTH", chain:1, reach:5, skus:25, skuT:"ED, SF, WP, WPSF, Red", eqT:"Slim Medium", eqQ:4, acts:1},
  {reg:"Southeast", ncram:"Carroll Jenkins", acct:"L'Oreal", chain:1, reach:1, skus:4, skuT:"ED, SF, WP, Red", eqT:"nan", eqQ:0, acts:1},
  {reg:"Southeast", ncram:"Carroll Jenkins", acct:"The Grove", chain:1, reach:1, skus:4, skuT:"ED, SF, Red, Yellow", eqT:"Slim Medium", eqQ:1, acts:1},
@@ -1225,12 +1207,12 @@ var ATWORK = [
  {reg:"Central", ncram:"Sierra Ford", acct:"Kiewitt HQ", chain:1, reach:1, skus:2, skuT:"Peach and Zero", eqT:"nan", eqQ:0, acts:1},
  {reg:"Midwest", ncram:"TJ McGowan", acct:"Caterpillar (Eurest)", chain:0, reach:0, skus:0, skuT:"nan", eqT:"Small GDC", eqQ:1, acts:1}
 ];
-var VOLM3 = {"Central":{"name":"Central","color":"#378ADD","act_ytd":184810.0,"bp":173919.33,"py_ytd":152668.0,"vs_bp":0.0626,"segs":{"Big3":{"act_ytd":26147.0,"bp":25977.35,"py_ytd":22589.0},"Vend":{"act_ytd":110400.0,"bp":99876.35,"py_ytd":86849.0},"Trvl":{"act_ytd":5869.0,"bp":6248.48,"py_ytd":5579.0},"CU":{"act_ytd":33567.0,"bp":32593.0,"py_ytd":29630.0},"HC":{"act_ytd":8827.0,"bp":9224.15,"py_ytd":8021.0}},"ncrams":{"Sierra Ford":{"act_ytd":67865.0,"bp":59339.21,"py_ytd":51915.0,"segs":{"Big3":{"act_ytd":8480.0,"bp":7843.0,"py_ytd":6820.0},"Vend":{"act_ytd":44820.0,"bp":37111.65,"py_ytd":32271.0},"Trvl":{"act_ytd":3347.0,"bp":3010.56,"py_ytd":2688.0},"CU":{"act_ytd":6477.0,"bp":6212.8,"py_ytd":5648.0},"HC":{"act_ytd":4741.0,"bp":5161.2,"py_ytd":4488.0}}},"Katie Naviaux":{"act_ytd":41781.0,"bp":41053.2,"py_ytd":36136.0,"segs":{"Big3":{"act_ytd":11953.0,"bp":10459.25,"py_ytd":9095.0},"Vend":{"act_ytd":13660.0,"bp":14930.45,"py_ytd":12983.0},"Trvl":{"act_ytd":1030.0,"bp":1624.0,"py_ytd":1450.0},"CU":{"act_ytd":11185.0,"bp":10113.4,"py_ytd":9194.0},"HC":{"act_ytd":3953.0,"bp":3926.1,"py_ytd":3414.0}}}}},"Midwest":{"name":"Midwest","color":"#1D9E75","act_ytd":226300.0,"bp":209135.5,"py_ytd":182797.0,"vs_bp":0.0821,"segs":{"Big3":{"act_ytd":20686.0,"bp":21801.7,"py_ytd":18958.0},"Vend":{"act_ytd":174162.0,"bp":155900.9,"py_ytd":135566.0},"Trvl":{"act_ytd":2808.0,"bp":5118.4,"py_ytd":4570.0},"CU":{"act_ytd":23704.0,"bp":20766.9,"py_ytd":18879.0},"HC":{"act_ytd":4940.0,"bp":5547.6,"py_ytd":4824.0}},"ncrams":{"Rudy Wagner":{"act_ytd":47883.0,"bp":45755.75,"py_ytd":39985.0,"segs":{"Big3":{"act_ytd":17667.0,"bp":18134.35,"py_ytd":15769.0},"Vend":{"act_ytd":22991.0,"bp":19918.0,"py_ytd":17320.0},"Trvl":{"act_ytd":713.0,"bp":1349.6,"py_ytd":1205.0},"CU":{"act_ytd":4615.0,"bp":4198.7,"py_ytd":3817.0},"HC":{"act_ytd":1897.0,"bp":2155.1,"py_ytd":1874.0}}},"Meg Flom":{"act_ytd":27032.0,"bp":25028.09,"py_ytd":21931.0,"segs":{"Big3":{"act_ytd":7247.0,"bp":7268.0,"py_ytd":6320.0},"Vend":{"act_ytd":10579.0,"bp":10697.3,"py_ytd":9302.0},"Trvl":{"act_ytd":810.0,"bp":887.04,"py_ytd":792.0},"CU":{"act_ytd":6210.0,"bp":3713.6,"py_ytd":3376.0},"HC":{"act_ytd":2186.0,"bp":2462.15,"py_ytd":2141.0}}},"TJ McGowan":{"act_ytd":14586.0,"bp":17668.24,"py_ytd":15538.0,"segs":{"Vend":{"act_ytd":9527.0,"bp":11232.05,"py_ytd":9767.0},"Trvl":{"act_ytd":954.0,"bp":2667.84,"py_ytd":2382.0},"CU":{"act_ytd":3248.0,"bp":2838.0,"py_ytd":2580.0},"HC":{"act_ytd":857.0,"bp":930.35,"py_ytd":809.0}}}}},"Northeast":{"name":"Northeast","color":"#EF9F27","act_ytd":237036.0,"bp":237515.88,"py_ytd":207732.0,"vs_bp":-0.002,"segs":{"Big3":{"act_ytd":26145.0,"bp":29891.95,"py_ytd":25993.0},"Vend":{"act_ytd":168632.0,"bp":166414.2,"py_ytd":144708.0},"Trvl":{"act_ytd":6585.0,"bp":6847.68,"py_ytd":6114.0},"CU":{"act_ytd":27911.0,"bp":26235.0,"py_ytd":23850.0},"HC":{"act_ytd":7763.0,"bp":8127.05,"py_ytd":7067.0}},"ncrams":{"Chris Trott":{"act_ytd":31202.0,"bp":29688.03,"py_ytd":26000.0,"segs":{"Big3":{"act_ytd":7548.0,"bp":7614.15,"py_ytd":6621.0},"Vend":{"act_ytd":15560.0,"bp":14674.0,"py_ytd":12760.0},"Trvl":{"act_ytd":540.0,"bp":603.68,"py_ytd":539.0},"CU":{"act_ytd":4918.0,"bp":4307.6,"py_ytd":3916.0},"HC":{"act_ytd":2636.0,"bp":2488.6,"py_ytd":2164.0}}},"Greg Drillock":{"act_ytd":38149.0,"bp":39251.76,"py_ytd":34323.0,"segs":{"Big3":{"act_ytd":10164.0,"bp":11429.85,"py_ytd":9939.0},"Vend":{"act_ytd":19877.0,"bp":19822.55,"py_ytd":17237.0},"Trvl":{"act_ytd":2070.0,"bp":2646.56,"py_ytd":2363.0},"CU":{"act_ytd":3624.0,"bp":3273.6,"py_ytd":2976.0},"HC":{"act_ytd":2414.0,"bp":2079.2,"py_ytd":1808.0}}},"Montana Renno":{"act_ytd":33677.0,"bp":39182.29,"py_ytd":34221.0,"segs":{"Big3":{"act_ytd":14681.0,"bp":20376.85,"py_ytd":17719.0},"Vend":{"act_ytd":12126.0,"bp":11186.05,"py_ytd":9727.0},"Trvl":{"act_ytd":633.0,"bp":679.84,"py_ytd":607.0},"CU":{"act_ytd":3524.0,"bp":3380.3,"py_ytd":3073.0},"HC":{"act_ytd":2713.0,"bp":3559.25,"py_ytd":3095.0}}}}},"Southeast":{"name":"Southeast","color":"#E24B4A","act_ytd":235897.0,"bp":227858.24,"py_ytd":199227.0,"vs_bp":0.0353,"segs":{"Big3":{"act_ytd":20418.0,"bp":19505.15,"py_ytd":16961.0},"Vend":{"act_ytd":178000.0,"bp":170323.05,"py_ytd":148107.0},"Trvl":{"act_ytd":9555.0,"bp":10871.84,"py_ytd":9707.0},"CU":{"act_ytd":21863.0,"bp":21155.2,"py_ytd":19232.0},"HC":{"act_ytd":6061.0,"bp":6003.0,"py_ytd":5220.0}},"ncrams":{"Carroll Jenkins":{"act_ytd":42233.0,"bp":38211.5,"py_ytd":33506.0,"segs":{"Big3":{"act_ytd":8203.0,"bp":7987.9,"py_ytd":6946.0},"Vend":{"act_ytd":21914.0,"bp":17638.7,"py_ytd":15338.0},"Trvl":{"act_ytd":3186.0,"bp":3763.2,"py_ytd":3360.0},"CU":{"act_ytd":5089.0,"bp":4831.2,"py_ytd":4392.0},"HC":{"act_ytd":3841.0,"bp":3990.5,"py_ytd":3470.0}}},"Josh Queja":{"act_ytd":36936.0,"bp":36766.53,"py_ytd":32352.0,"segs":{"Big3":{"act_ytd":9393.0,"bp":9247.15,"py_ytd":8041.0},"Vend":{"act_ytd":14352.0,"bp":14303.7,"py_ytd":12438.0},"Trvl":{"act_ytd":3463.0,"bp":3801.28,"py_ytd":3394.0},"CU":{"act_ytd":7508.0,"bp":7401.9,"py_ytd":6729.0},"HC":{"act_ytd":2220.0,"bp":2012.5,"py_ytd":1750.0}}}}},"West":{"name":"West","color":"#7F77DD","act_ytd":100504.0,"bp":102198.7,"py_ytd":89969.0,"vs_bp":-0.0166,"segs":{"Big3":{"act_ytd":19759.0,"bp":21450.95,"py_ytd":18653.0},"Vend":{"act_ytd":43488.0,"bp":44068.0,"py_ytd":38320.0},"Trvl":{"act_ytd":6039.0,"bp":7515.2,"py_ytd":6710.0},"CU":{"act_ytd":25457.0,"bp":23415.7,"py_ytd":21287.0},"HC":{"act_ytd":5761.0,"bp":5748.85,"py_ytd":4999.0}},"ncrams":{"Amy Quinet":{"act_ytd":50039.0,"bp":55534.38,"py_ytd":48771.0,"segs":{"Big3":{"act_ytd":8734.0,"bp":11192.95,"py_ytd":9733.0},"Vend":{"act_ytd":25997.0,"bp":27468.9,"py_ytd":23886.0},"Trvl":{"act_ytd":2594.0,"bp":2933.28,"py_ytd":2619.0},"CU":{"act_ytd":9291.0,"bp":10421.4,"py_ytd":9474.0},"HC":{"act_ytd":3423.0,"bp":3517.85,"py_ytd":3059.0}}},"Jenny Lynch":{"act_ytd":50465.0,"bp":46664.32,"py_ytd":41198.0,"segs":{"Big3":{"act_ytd":11025.0,"bp":10258.0,"py_ytd":8920.0},"Vend":{"act_ytd":17491.0,"bp":16599.1,"py_ytd":14434.0},"Trvl":{"act_ytd":3445.0,"bp":4581.92,"py_ytd":4091.0},"CU":{"act_ytd":16166.0,"bp":12994.3,"py_ytd":11813.0},"HC":{"act_ytd":2338.0,"bp":2231.0,"py_ytd":1940.0}}}}}};
+var VOLM3 = {"Central":{"name":"Central","color":"#378ADD","act_ytd":184810.0,"bp":173919.33,"py_ytd":152668.0,"vs_bp":0.0626,"segs":{"Big3":{"act_ytd":26147.0,"bp":25977.35,"py_ytd":22589.0},"Vend":{"act_ytd":110400.0,"bp":99876.35,"py_ytd":86849.0},"Trvl":{"act_ytd":5869.0,"bp":6248.48,"py_ytd":5579.0},"CU":{"act_ytd":33567.0,"bp":32593.0,"py_ytd":29630.0},"HC":{"act_ytd":8827.0,"bp":9224.15,"py_ytd":8021.0}},"ncrams":{"Sierra Ford":{"act_ytd":67865.0,"bp":59339.21,"py_ytd":51915.0,"segs":{"Big3":{"act_ytd":8480.0,"bp":7843.0,"py_ytd":6820.0},"Vend":{"act_ytd":44820.0,"bp":37111.65,"py_ytd":32271.0},"Trvl":{"act_ytd":3347.0,"bp":3010.56,"py_ytd":2688.0},"CU":{"act_ytd":6477.0,"bp":6212.8,"py_ytd":5648.0},"HC":{"act_ytd":4741.0,"bp":5161.2,"py_ytd":4488.0}}},"Katie Naviaux":{"act_ytd":41781.0,"bp":41053.2,"py_ytd":36136.0,"segs":{"Big3":{"act_ytd":11953.0,"bp":10459.25,"py_ytd":9095.0},"Vend":{"act_ytd":13660.0,"bp":14930.45,"py_ytd":12983.0},"Trvl":{"act_ytd":1030.0,"bp":1624.0,"py_ytd":1450.0},"CU":{"act_ytd":11185.0,"bp":10113.4,"py_ytd":9194.0},"HC":{"act_ytd":3953.0,"bp":3926.1,"py_ytd":3414.0}}}}},"Midwest":{"name":"Midwest","color":"#1D9E75","act_ytd":226300.0,"bp":209135.5,"py_ytd":182797.0,"vs_bp":0.0821,"segs":{"Big3":{"act_ytd":20686.0,"bp":21801.7,"py_ytd":18958.0},"Vend":{"act_ytd":174162.0,"bp":155900.9,"py_ytd":135566.0},"Trvl":{"act_ytd":2808.0,"bp":5118.4,"py_ytd":4570.0},"CU":{"act_ytd":23704.0,"bp":20766.9,"py_ytd":18879.0},"HC":{"act_ytd":4940.0,"bp":5547.6,"py_ytd":4824.0}},"ncrams":{"Rudy Wagner":{"act_ytd":47883.0,"bp":45755.75,"py_ytd":39985.0,"segs":{"Big3":{"act_ytd":17667.0,"bp":18134.35,"py_ytd":15769.0},"Vend":{"act_ytd":22991.0,"bp":19918.0,"py_ytd":17320.0},"Trvl":{"act_ytd":713.0,"bp":1349.6,"py_ytd":1205.0},"CU":{"act_ytd":4615.0,"bp":4198.7,"py_ytd":3817.0},"HC":{"act_ytd":1897.0,"bp":2155.1,"py_ytd":1874.0}}},"Meg Flom":{"act_ytd":27032.0,"bp":25028.09,"py_ytd":21931.0,"segs":{"Big3":{"act_ytd":7247.0,"bp":7268.0,"py_ytd":6320.0},"Vend":{"act_ytd":10579.0,"bp":10697.3,"py_ytd":9302.0},"Trvl":{"act_ytd":810.0,"bp":887.04,"py_ytd":792.0},"CU":{"act_ytd":6210.0,"bp":3713.6,"py_ytd":3376.0},"HC":{"act_ytd":2186.0,"bp":2462.15,"py_ytd":2141.0}}},"TJ McGowan":{"act_ytd":14586.0,"bp":17668.24,"py_ytd":15538.0,"segs":{"Vend":{"act_ytd":9527.0,"bp":11232.05,"py_ytd":9767.0},"Trvl":{"act_ytd":954.0,"bp":2667.84,"py_ytd":2382.0},"CU":{"act_ytd":3248.0,"bp":2838.0,"py_ytd":2580.0},"HC":{"act_ytd":857.0,"bp":930.35,"py_ytd":809.0}}}}},"Northeast":{"name":"Northeast","color":"#EF9F27","act_ytd":237036.0,"bp":237515.88,"py_ytd":207732.0,"vs_bp":-0.002,"segs":{"Big3":{"act_ytd":26145.0,"bp":29891.95,"py_ytd":25993.0},"Vend":{"act_ytd":168632.0,"bp":166414.2,"py_ytd":144708.0},"Trvl":{"act_ytd":6585.0,"bp":6847.68,"py_ytd":6114.0},"CU":{"act_ytd":27911.0,"bp":26235.0,"py_ytd":23850.0},"HC":{"act_ytd":7763.0,"bp":8127.05,"py_ytd":7067.0}},"ncrams":{"Chris Trott":{"act_ytd":31202.0,"bp":29688.03,"py_ytd":26000.0,"segs":{"Big3":{"act_ytd":7548.0,"bp":7614.15,"py_ytd":6621.0},"Vend":{"act_ytd":15560.0,"bp":14674.0,"py_ytd":12760.0},"Trvl":{"act_ytd":540.0,"bp":603.68,"py_ytd":539.0},"CU":{"act_ytd":4918.0,"bp":4307.6,"py_ytd":3916.0},"HC":{"act_ytd":2636.0,"bp":2488.6,"py_ytd":2164.0}}},"Greg Drillock":{"act_ytd":38149.0,"bp":39251.76,"py_ytd":34323.0,"segs":{"Big3":{"act_ytd":10164.0,"bp":11429.85,"py_ytd":9939.0},"Vend":{"act_ytd":19877.0,"bp":19822.55,"py_ytd":17237.0},"Trvl":{"act_ytd":2070.0,"bp":2646.56,"py_ytd":2363.0},"CU":{"act_ytd":3624.0,"bp":3273.6,"py_ytd":2976.0},"HC":{"act_ytd":2414.0,"bp":2079.2,"py_ytd":1808.0}}},"Montana Renno":{"act_ytd":33677.0,"bp":39182.29,"py_ytd":34221.0,"segs":{"Big3":{"act_ytd":14681.0,"bp":20376.85,"py_ytd":17719.0},"Vend":{"act_ytd":12126.0,"bp":11186.05,"py_ytd":9727.0},"Trvl":{"act_ytd":633.0,"bp":679.84,"py_ytd":607.0},"CU":{"act_ytd":3524.0,"bp":3380.3,"py_ytd":3073.0},"HC":{"act_ytd":2713.0,"bp":3559.25,"py_ytd":3095.0}}}}},"Southeast":{"name":"Southeast","color":"#E24B4A","act_ytd":235897.0,"bp":227858.24,"py_ytd":199227.0,"vs_bp":0.0353,"segs":{"Big3":{"act_ytd":20418.0,"bp":19505.15,"py_ytd":16961.0},"Vend":{"act_ytd":178000.0,"bp":170323.05,"py_ytd":148107.0},"Trvl":{"act_ytd":9555.0,"bp":10871.84,"py_ytd":9707.0},"CU":{"act_ytd":21863.0,"bp":21155.2,"py_ytd":19232.0},"HC":{"act_ytd":6061.0,"bp":6003.0,"py_ytd":5220.0}},"ncrams":{"Carroll Jenkins":{"act_ytd":42233.0,"bp":38211.5,"py_ytd":33506.0,"segs":{"Big3":{"act_ytd":8203.0,"bp":7987.9,"py_ytd":6946.0},"Vend":{"act_ytd":21914.0,"bp":17638.7,"py_ytd":15338.0},"Trvl":{"act_ytd":3186.0,"bp":3763.2,"py_ytd":3360.0},"CU":{"act_ytd":5089.0,"bp":4831.2,"py_ytd":4392.0},"HC":{"act_ytd":3841.0,"bp":3990.5,"py_ytd":3470.0}}},"Open Role (SE)":{"act_ytd":36936.0,"bp":36766.53,"py_ytd":32352.0,"segs":{"Big3":{"act_ytd":9393.0,"bp":9247.15,"py_ytd":8041.0},"Vend":{"act_ytd":14352.0,"bp":14303.7,"py_ytd":12438.0},"Trvl":{"act_ytd":3463.0,"bp":3801.28,"py_ytd":3394.0},"CU":{"act_ytd":7508.0,"bp":7401.9,"py_ytd":6729.0},"HC":{"act_ytd":2220.0,"bp":2012.5,"py_ytd":1750.0}}}}},"West":{"name":"West","color":"#7F77DD","act_ytd":100504.0,"bp":102198.7,"py_ytd":89969.0,"vs_bp":-0.0166,"segs":{"Big3":{"act_ytd":19759.0,"bp":21450.95,"py_ytd":18653.0},"Vend":{"act_ytd":43488.0,"bp":44068.0,"py_ytd":38320.0},"Trvl":{"act_ytd":6039.0,"bp":7515.2,"py_ytd":6710.0},"CU":{"act_ytd":25457.0,"bp":23415.7,"py_ytd":21287.0},"HC":{"act_ytd":5761.0,"bp":5748.85,"py_ytd":4999.0}},"ncrams":{"Amy Quinet":{"act_ytd":50039.0,"bp":55534.38,"py_ytd":48771.0,"segs":{"Big3":{"act_ytd":8734.0,"bp":11192.95,"py_ytd":9733.0},"Vend":{"act_ytd":25997.0,"bp":27468.9,"py_ytd":23886.0},"Trvl":{"act_ytd":2594.0,"bp":2933.28,"py_ytd":2619.0},"CU":{"act_ytd":9291.0,"bp":10421.4,"py_ytd":9474.0},"HC":{"act_ytd":3423.0,"bp":3517.85,"py_ytd":3059.0}}},"Kendall Braidic":{"act_ytd":50465.0,"bp":46664.32,"py_ytd":41198.0,"segs":{"Big3":{"act_ytd":11025.0,"bp":10258.0,"py_ytd":8920.0},"Vend":{"act_ytd":17491.0,"bp":16599.1,"py_ytd":14434.0},"Trvl":{"act_ytd":3445.0,"bp":4581.92,"py_ytd":4091.0},"CU":{"act_ytd":16166.0,"bp":12994.3,"py_ytd":11813.0},"HC":{"act_ytd":2338.0,"bp":2231.0,"py_ytd":1940.0}}}}}};
 var VEND_FW = [{"reg":"Central","ncram":"Sierra Ford","acct":"Canteen Dallas","reach":19,"skus":3,"skuT":"SF Peach, Iced Vanilla Berry, Summer","eqT":"","eqQ":25,"acts":2},{"reg":"Central","ncram":"Sierra Ford","acct":"Canteen Houston","reach":0,"skus":2,"skuT":"Iced Vanilla Berry, Summer","eqT":"","eqQ":14,"acts":1},{"reg":"Central","ncram":"Sierra Ford","acct":"Canteen Austin","reach":6,"skus":3,"skuT":"Iced Vanilla Berry, SF Peach, Summer","eqT":"","eqQ":6,"acts":1},{"reg":"Central","ncram":"Sierra Ford","acct":"Canteen San Antonio","reach":8,"skus":3,"skuT":"Peach, Coconut, Summer","eqT":"","eqQ":8,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"Canteen Denver","reach":0,"skus":2,"skuT":"Sudachi Lime, Peach, SF Sea Blue","eqT":"5 Mega GDC's","eqQ":5,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"Canteen Evans/Greeley","reach":0,"skus":2,"skuT":"Sudachi Lime, Peach","eqT":"","eqQ":0,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"Compass Colorado Springs","reach":0,"skus":2,"skuT":"Sudachi Lime, Peach","eqT":"5 Mega GDC's","eqQ":5,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"Treasure Valley Coffee","reach":0,"skus":1,"skuT":"Sea Blue","eqT":"10 Slim Mega's","eqQ":10,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"Tanzie Vending","reach":0,"skus":0,"skuT":"","eqT":"Slim Medium","eqQ":1,"acts":0},{"reg":"Central","ncram":"Katie Naviaux","acct":"City Vending","reach":0,"skus":1,"skuT":"Sudachi Lime, Peach","eqT":"5 Vending Machines, 10 Slim Mega's","eqQ":15,"acts":0},{"reg":"Northeast","ncram":"Chris Trott","acct":"Casco Bay F&B (Canteen - ME)","reach":2,"skus":4,"skuT":"ED, SF, Sea Blue, Peach","eqT":"Mega Slim","eqQ":2,"acts":1},{"reg":"Northeast","ncram":"Chris Trott","acct":"Buffalo Strive (USG - NY)","reach":2,"skus":1,"skuT":"Sea Blue","eqT":"","eqQ":0,"acts":1},{"reg":"Northeast","ncram":"Chris Trott","acct":"Berkshire Foods (CT)","reach":2,"skus":4,"skuT":"ED, SF, Sea Blue, Peach","eqT":"Vending Machine","eqQ":6,"acts":0},{"reg":"West","ncram":"Amy Quinet","acct":"Google (Canteen)","reach":0,"skus":1,"skuT":"Spring and Summer LTO","eqT":"","eqQ":0,"acts":3},{"reg":"West","ncram":"Amy Quinet","acct":"Google (Guckenheimer)","reach":0,"skus":1,"skuT":"White Peach Sugarfree","eqT":"","eqQ":0,"acts":4},{"reg":"West","ncram":"Amy Quinet","acct":"Sony (Playstation) Bon Appetit","reach":0,"skus":3,"skuT":"White Peach, Juneberry, Red","eqT":"Baby Cooler","eqQ":1,"acts":10},{"reg":"West","ncram":"Amy Quinet","acct":"Meta","reach":0,"skus":0,"skuT":"sold 2nd sku White peach","eqT":"Small GDC","eqQ":2,"acts":0},{"reg":"West","ncram":"Amy Quinet","acct":"Tesla events week of April 23-25","reach":0,"skus":0,"skuT":"summer LTO sold in, white peach, van iced berry","eqT":"","eqQ":3,"acts":4},{"reg":"West","ncram":"Amy Quinet","acct":"IG Acccounts :Eurest -78 Bon App 8","reach":5,"skus":2,"skuT":"White peach, Sea Blue","eqT":"Mega Slim","eqQ":14,"acts":14},{"reg":"West","ncram":"Amy Quinet","acct":"Vistar Buying show","reach":2,"skus":1,"skuT":"","eqT":"Mega GDC","eqQ":2,"acts":0},{"reg":"West","ncram":"Amy Quinet","acct":"Canteen Innovation Fair w/top clients","reach":1,"skus":2,"skuT":"ED and SF","eqT":"","eqQ":0,"acts":0},{"reg":"West","ncram":"Amy Quinet","acct":"Google Summer Activations june 9-11","reach":0,"skus":1,"skuT":"summer LTO sold in","eqT":"","eqQ":0,"acts":3},{"reg":"Southeast","ncram":"Carroll Jenkins","acct":"Canteen Jacksonville","reach":0,"skus":0,"skuT":"","eqT":"Vending Machine","eqQ":4,"acts":0},{"reg":"Southeast","ncram":"Carroll Jenkins","acct":"Canteen Miami","reach":0,"skus":0,"skuT":"","eqT":"Mega Slim","eqQ":15,"acts":0},{"reg":"Northeast","ncram":"Chris Trott","acct":"Casco Bay F&B (Canteen - ME)","reach":3,"skus":4,"skuT":"ED, SF, Sea Blue, Peach","eqT":"Mega Slim","eqQ":3,"acts":2},{"reg":"Northeast","ncram":"Chris Trott","acct":"Buffalo Strive (USG - NY)","reach":2,"skus":1,"skuT":"Sea Blue","eqT":"","eqQ":0,"acts":1},{"reg":"Northeast","ncram":"Chris Trott","acct":"Berkshire Foods (CT)","reach":6,"skus":4,"skuT":"ED, SF, Sea Blue, Peach","eqT":"Vending Machine","eqQ":6,"acts":0},{"reg":"Northeast","ncram":"Chris Trott","acct":"NERSA","reach":0,"skus":0,"skuT":"ED, SF, Sea Blue, Peach, SF Iced, SF Pink, SF Peach, Zero","eqT":"Vending Machine","eqQ":0,"acts":4},{"reg":"Northeast","ncram":"Chris Trott","acct":"Automated Vending","reach":10,"skus":2,"skuT":"Sea Blue, Peach","eqT":"","eqQ":0,"acts":0},{"reg":"Northeast","ncram":"Chris Trott","acct":"LTD Refreshments","reach":3,"skus":1,"skuT":"Zero","eqT":"Small GDC","eqQ":3,"acts":1},{"reg":"Northeast","ncram":"Chris Trott","acct":"Ackers Vending","reach":2,"skus":1,"skuT":"Sea Blue, Peach","eqT":"Small GDC","eqQ":2,"acts":1},{"reg":"Northeast","ncram":"Greg Drillock","acct":"NYU Vending","reach":50,"skus":4,"skuT":"","eqT":"","eqQ":0,"acts":0},{"reg":"Northeast","ncram":"Montana Renno","acct":"Total Quality Logistics (Canteen)","reach":2,"skus":2,"skuT":"White Peach, Sea Blue","eqT":"","eqQ":0,"acts":2},{"reg":"Northeast","ncram":"Montana Renno","acct":"Ford Motor Company (Aramark Refreshments)","reach":3,"skus":2,"skuT":"White Peach, Sea Blue","eqT":"Small GDC","eqQ":3,"acts":1},{"reg":"Northeast","ncram":"Montana Renno","acct":"Canteen Virginia","reach":12,"skus":1,"skuT":"White Peach","eqT":"Vending Machine","eqQ":4,"acts":1},{"reg":"Northeast","ncram":"Montana Renno","acct":"Laurel FoodSystems","reach":0,"skus":1,"skuT":"White Peach","eqT":"","eqQ":0,"acts":0}];
 
-var VOLM = [{"py_cm":27476, "act_cm":30885.9, "bp_cm":31604.3, "py_ytd":27476, "act_ytd":30885.9, "bp_ytd":31604.3, "reg":"Central", "ram":"Sierra Ford", "seg":"Big3", "month":"may"},{"py_cm":9906.4, "act_cm":10950, "bp_cm":10897.1, "py_ytd":9906.4, "act_ytd":10950, "bp_ytd":10897.1, "reg":"Central", "ram":"Sierra Ford", "seg":"CU", "month":"may"},{"py_cm":4782.4, "act_cm":5724.4, "bp_cm":5356.3, "py_ytd":4782.4, "act_ytd":5724.4, "bp_ytd":5356.3, "reg":"Central", "ram":"Sierra Ford", "seg":"Trvl", "month":"may"},{"py_cm":62505.1, "act_cm":87556, "bp_cm":71880.8, "py_ytd":62505.1, "act_ytd":87556, "bp_ytd":71880.8, "reg":"Central", "ram":"Sierra Ford", "seg":"Vend", "month":"may"},{"py_cm":12160.8, "act_cm":15933, "bp_cm":13994.2, "py_ytd":12160.8, "act_ytd":15933, "bp_ytd":13994.2, "reg":"Central", "ram":"Katie Naviaux", "seg":"Big3", "month":"may"},{"py_cm":15216.7, "act_cm":17732, "bp_cm":16738.4, "py_ytd":15216.7, "act_ytd":17732, "bp_ytd":16738.4, "reg":"Central", "ram":"Katie Naviaux", "seg":"CU", "month":"may"},{"py_cm":3165.9, "act_cm":1967.2, "bp_cm":3545.9, "py_ytd":3165.9, "act_ytd":1967.2, "bp_ytd":3545.9, "reg":"Central", "ram":"Katie Naviaux", "seg":"Trvl", "month":"may"},{"py_cm":22241, "act_cm":28616.5, "bp_cm":25577.2, "py_ytd":22241, "act_ytd":28616.5, "bp_ytd":25577.2, "reg":"Central", "ram":"Katie Naviaux", "seg":"Vend", "month":"may"},{"py_cm":11855.1, "act_cm":14071.5, "bp_cm":13640.3, "py_ytd":11855.1, "act_ytd":14071.5, "bp_ytd":13640.3, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Big3", "month":"may"},{"py_cm":6897.8, "act_cm":7360.7, "bp_cm":7587.5, "py_ytd":6897.8, "act_ytd":7360.7, "bp_ytd":7587.5, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"CU", "month":"may"},{"py_cm":2217.1, "act_cm":1324.7, "bp_cm":2483.2, "py_ytd":2217.1, "act_ytd":1324.7, "bp_ytd":2483.2, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Trvl", "month":"may"},{"py_cm":29117.8, "act_cm":38723.2, "bp_cm":33485.5, "py_ytd":29117.8, "act_ytd":38723.2, "bp_ytd":33485.5, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Vend", "month":"may"},{"py_cm":11294.5, "act_cm":12980.3, "bp_cm":13007.1, "py_ytd":11294.5, "act_ytd":12980.3, "bp_ytd":13007.1, "reg":"Midwest", "ram":"Meg Flom", "seg":"Big3", "month":"may"},{"py_cm":5335.5, "act_cm":9062.7, "bp_cm":5869, "py_ytd":5335.5, "act_ytd":9062.7, "bp_ytd":5869, "reg":"Midwest", "ram":"Meg Flom", "seg":"CU", "month":"may"},{"py_cm":1390.4, "act_cm":1370.2, "bp_cm":1557.3, "py_ytd":1390.4, "act_ytd":1370.2, "bp_ytd":1557.3, "reg":"Midwest", "ram":"Meg Flom", "seg":"Trvl", "month":"may"},{"py_cm":28137, "act_cm":32443, "bp_cm":32357.5, "py_ytd":28137, "act_ytd":32443, "bp_ytd":32357.5, "reg":"Midwest", "ram":"Meg Flom", "seg":"Vend", "month":"may"},{"py_cm":8614.3, "act_cm":8142.8, "bp_cm":9908.6, "py_ytd":8614.3, "act_ytd":8142.8, "bp_ytd":9908.6, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Big3", "month":"may"},{"py_cm":4642.9, "act_cm":5474.5, "bp_cm":5110.8, "py_ytd":4642.9, "act_ytd":5474.5, "bp_ytd":5110.8, "reg":"Midwest", "ram":"TJ McGowan", "seg":"CU", "month":"may"},{"py_cm":3006.6, "act_cm":1582.3, "bp_cm":3367.4, "py_ytd":3006.6, "act_ytd":1582.3, "bp_ytd":3367.4, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Trvl", "month":"may"},{"py_cm":13316, "act_cm":21867, "bp_cm":15313.4, "py_ytd":13316, "act_ytd":21867, "bp_ytd":15313.4, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Vend", "month":"may"},{"py_cm":11452.3, "act_cm":12730.5, "bp_cm":13175.9, "py_ytd":11452.3, "act_ytd":12730.5, "bp_ytd":13175.9, "reg":"Northeast", "ram":"Chris Trott", "seg":"Big3", "month":"may"},{"py_cm":10591.1, "act_cm":12032.5, "bp_cm":11650.2, "py_ytd":10591.1, "act_ytd":12032.5, "bp_ytd":11650.2, "reg":"Northeast", "ram":"Chris Trott", "seg":"CU", "month":"may"},{"py_cm":861.8, "act_cm":982, "bp_cm":965.3, "py_ytd":861.8, "act_ytd":982, "bp_ytd":965.3, "reg":"Northeast", "ram":"Chris Trott", "seg":"Trvl", "month":"may"},{"py_cm":23345, "act_cm":27066, "bp_cm":26846.8, "py_ytd":23345, "act_ytd":27066, "bp_ytd":26846.8, "reg":"Northeast", "ram":"Chris Trott", "seg":"Vend", "month":"may"},{"py_cm":17400, "act_cm":17934.5, "bp_cm":20059.4, "py_ytd":17400, "act_ytd":17934.5, "bp_ytd":20059.4, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Big3", "month":"may"},{"py_cm":5267.3, "act_cm":5802.3, "bp_cm":5794, "py_ytd":5267.3, "act_ytd":5802.3, "bp_ytd":5794, "reg":"Northeast", "ram":"Greg Drillock", "seg":"CU", "month":"may"},{"py_cm":4101.8, "act_cm":3709.3, "bp_cm":4597.4, "py_ytd":4101.8, "act_ytd":3709.3, "bp_ytd":4597.4, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Trvl", "month":"may"},{"py_cm":30634, "act_cm":36408, "bp_cm":35229.1, "py_ytd":30634, "act_ytd":36408, "bp_ytd":35229.1, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Vend", "month":"may"},{"py_cm":16637.7, "act_cm":15456.8, "bp_cm":19149.5, "py_ytd":16637.7, "act_ytd":15456.8, "bp_ytd":19149.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Big3", "month":"may"},{"py_cm":5093.5, "act_cm":5749.3, "bp_cm":5628.1, "py_ytd":5093.5, "act_ytd":5749.3, "bp_ytd":5628.1, "reg":"Northeast", "ram":"Montana Renno", "seg":"CU", "month":"may"},{"py_cm":1121, "act_cm":1043.8, "bp_cm":1255.5, "py_ytd":1121, "act_ytd":1043.8, "bp_ytd":1255.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Trvl", "month":"may"},{"py_cm":19383, "act_cm":20446, "bp_cm":22290.5, "py_ytd":19383, "act_ytd":20446, "bp_ytd":22290.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Vend", "month":"may"},{"py_cm":13945, "act_cm":16359.3, "bp_cm":16040.1, "py_ytd":13945, "act_ytd":16359.3, "bp_ytd":16040.1, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Big3", "month":"may"},{"py_cm":6587.4, "act_cm":7718.3, "bp_cm":7246.2, "py_ytd":6587.4, "act_ytd":7718.3, "bp_ytd":7246.2, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"CU", "month":"may"},{"py_cm":5673.8, "act_cm":5075.6, "bp_cm":6354.7, "py_ytd":5673.8, "act_ytd":5075.6, "bp_ytd":6354.7, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Trvl", "month":"may"},{"py_cm":26758, "act_cm":38492, "bp_cm":30771.7, "py_ytd":26758, "act_ytd":38492, "bp_ytd":30771.7, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Vend", "month":"may"},{"py_cm":16313.5, "act_cm":18926.4, "bp_cm":18765.2, "py_ytd":16313.5, "act_ytd":18926.4, "bp_ytd":18765.2, "reg":"Southeast", "ram":"Josh Queja", "seg":"Big3", "month":"may"},{"py_cm":11067, "act_cm":12605.3, "bp_cm":12177, "py_ytd":11067, "act_ytd":12605.3, "bp_ytd":12177, "reg":"Southeast", "ram":"Josh Queja", "seg":"CU", "month":"may"},{"py_cm":6085.5, "act_cm":5567.5, "bp_cm":6815.7, "py_ytd":6085.5, "act_ytd":5567.5, "bp_ytd":6815.7, "reg":"Southeast", "ram":"Josh Queja", "seg":"Trvl", "month":"may"},{"py_cm":21595, "act_cm":26075, "bp_cm":24834.3, "py_ytd":21595, "act_ytd":26075, "bp_ytd":24834.3, "reg":"Southeast", "ram":"Josh Queja", "seg":"Vend", "month":"may"},{"py_cm":15304.5, "act_cm":19765.3, "bp_cm":17616.8, "py_ytd":15304.5, "act_ytd":19765.3, "bp_ytd":17616.8, "reg":"West", "ram":"Kendall Braidic", "seg":"Big3", "month":"may"},{"py_cm":20730, "act_cm":26543.5, "bp_cm":22809.6, "py_ytd":20730, "act_ytd":26543.5, "bp_ytd":22809.6, "reg":"West", "ram":"Kendall Braidic", "seg":"CU", "month":"may"},{"py_cm":6720.8, "act_cm":5981.9, "bp_cm":7577.9, "py_ytd":6720.8, "act_ytd":5981.9, "bp_ytd":7577.9, "reg":"West", "ram":"Kendall Braidic", "seg":"Trvl", "month":"may"},{"py_cm":24152, "act_cm":31245, "bp_cm":27774.8, "py_ytd":24152, "act_ytd":31245, "bp_ytd":27774.8, "reg":"West", "ram":"Kendall Braidic", "seg":"Vend", "month":"may"},{"py_cm":31053, "act_cm":26872.3, "bp_cm":35722.4, "py_ytd":31053, "act_ytd":26872.3, "bp_ytd":35722.4, "reg":"West", "ram":"Amy Quinet", "seg":"Big3", "month":"may"},{"py_cm":16028, "act_cm":16465.2, "bp_cm":17630.8, "py_ytd":16028, "act_ytd":16465.2, "bp_ytd":17630.8, "reg":"West", "ram":"Amy Quinet", "seg":"CU", "month":"may"},{"py_cm":5064.2, "act_cm":4025.2, "bp_cm":5673, "py_ytd":5064.2, "act_ytd":4025.2, "bp_ytd":5673, "reg":"West", "ram":"Amy Quinet", "seg":"Trvl", "month":"may"},{"py_cm":46066, "act_cm":54407, "bp_cm":52975.9, "py_ytd":46066, "act_ytd":54407, "bp_ytd":52975.9, "reg":"West", "ram":"Amy Quinet", "seg":"Vend", "month":"may"}];
-var VOLM_NCRAMS = ["Katie Naviaux", "Sierra Ford", "Meg Flom", "Rudy Wagner", "TJ McGowan", "Montana Renno", "Greg Drillock", "Chris Trott", "Carroll Jenkins", "Josh Queja", "Amy Quinet", "Kendall Braidic"];
-var VOLM_REG_NCRAMS = {"West": ["Amy Quinet", "Kendall Braidic"], "Central": ["Katie Naviaux", "Sierra Ford"], "Midwest": ["Meg Flom", "Rudy Wagner", "TJ McGowan"], "Northeast": ["Montana Renno", "Greg Drillock", "Chris Trott"], "Southeast": ["Carroll Jenkins", "Josh Queja"]};
+var VOLM = [{"py_cm":27476, "act_cm":30885.9, "bp_cm":31604.3, "py_ytd":27476, "act_ytd":30885.9, "bp_ytd":31604.3, "reg":"Central", "ram":"Sierra Ford", "seg":"Big3", "month":"may"},{"py_cm":9906.4, "act_cm":10950, "bp_cm":10897.1, "py_ytd":9906.4, "act_ytd":10950, "bp_ytd":10897.1, "reg":"Central", "ram":"Sierra Ford", "seg":"CU", "month":"may"},{"py_cm":4782.4, "act_cm":5724.4, "bp_cm":5356.3, "py_ytd":4782.4, "act_ytd":5724.4, "bp_ytd":5356.3, "reg":"Central", "ram":"Sierra Ford", "seg":"Trvl", "month":"may"},{"py_cm":62505.1, "act_cm":87556, "bp_cm":71880.8, "py_ytd":62505.1, "act_ytd":87556, "bp_ytd":71880.8, "reg":"Central", "ram":"Sierra Ford", "seg":"Vend", "month":"may"},{"py_cm":12160.8, "act_cm":15933, "bp_cm":13994.2, "py_ytd":12160.8, "act_ytd":15933, "bp_ytd":13994.2, "reg":"Central", "ram":"Katie Naviaux", "seg":"Big3", "month":"may"},{"py_cm":15216.7, "act_cm":17732, "bp_cm":16738.4, "py_ytd":15216.7, "act_ytd":17732, "bp_ytd":16738.4, "reg":"Central", "ram":"Katie Naviaux", "seg":"CU", "month":"may"},{"py_cm":3165.9, "act_cm":1967.2, "bp_cm":3545.9, "py_ytd":3165.9, "act_ytd":1967.2, "bp_ytd":3545.9, "reg":"Central", "ram":"Katie Naviaux", "seg":"Trvl", "month":"may"},{"py_cm":22241, "act_cm":28616.5, "bp_cm":25577.2, "py_ytd":22241, "act_ytd":28616.5, "bp_ytd":25577.2, "reg":"Central", "ram":"Katie Naviaux", "seg":"Vend", "month":"may"},{"py_cm":11855.1, "act_cm":14071.5, "bp_cm":13640.3, "py_ytd":11855.1, "act_ytd":14071.5, "bp_ytd":13640.3, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Big3", "month":"may"},{"py_cm":6897.8, "act_cm":7360.7, "bp_cm":7587.5, "py_ytd":6897.8, "act_ytd":7360.7, "bp_ytd":7587.5, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"CU", "month":"may"},{"py_cm":2217.1, "act_cm":1324.7, "bp_cm":2483.2, "py_ytd":2217.1, "act_ytd":1324.7, "bp_ytd":2483.2, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Trvl", "month":"may"},{"py_cm":29117.8, "act_cm":38723.2, "bp_cm":33485.5, "py_ytd":29117.8, "act_ytd":38723.2, "bp_ytd":33485.5, "reg":"Midwest", "ram":"Rudy Wagner", "seg":"Vend", "month":"may"},{"py_cm":11294.5, "act_cm":12980.3, "bp_cm":13007.1, "py_ytd":11294.5, "act_ytd":12980.3, "bp_ytd":13007.1, "reg":"Midwest", "ram":"Meg Flom", "seg":"Big3", "month":"may"},{"py_cm":5335.5, "act_cm":9062.7, "bp_cm":5869, "py_ytd":5335.5, "act_ytd":9062.7, "bp_ytd":5869, "reg":"Midwest", "ram":"Meg Flom", "seg":"CU", "month":"may"},{"py_cm":1390.4, "act_cm":1370.2, "bp_cm":1557.3, "py_ytd":1390.4, "act_ytd":1370.2, "bp_ytd":1557.3, "reg":"Midwest", "ram":"Meg Flom", "seg":"Trvl", "month":"may"},{"py_cm":28137, "act_cm":32443, "bp_cm":32357.5, "py_ytd":28137, "act_ytd":32443, "bp_ytd":32357.5, "reg":"Midwest", "ram":"Meg Flom", "seg":"Vend", "month":"may"},{"py_cm":8614.3, "act_cm":8142.8, "bp_cm":9908.6, "py_ytd":8614.3, "act_ytd":8142.8, "bp_ytd":9908.6, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Big3", "month":"may"},{"py_cm":4642.9, "act_cm":5474.5, "bp_cm":5110.8, "py_ytd":4642.9, "act_ytd":5474.5, "bp_ytd":5110.8, "reg":"Midwest", "ram":"TJ McGowan", "seg":"CU", "month":"may"},{"py_cm":3006.6, "act_cm":1582.3, "bp_cm":3367.4, "py_ytd":3006.6, "act_ytd":1582.3, "bp_ytd":3367.4, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Trvl", "month":"may"},{"py_cm":13316, "act_cm":21867, "bp_cm":15313.4, "py_ytd":13316, "act_ytd":21867, "bp_ytd":15313.4, "reg":"Midwest", "ram":"TJ McGowan", "seg":"Vend", "month":"may"},{"py_cm":11452.3, "act_cm":12730.5, "bp_cm":13175.9, "py_ytd":11452.3, "act_ytd":12730.5, "bp_ytd":13175.9, "reg":"Northeast", "ram":"Chris Trott", "seg":"Big3", "month":"may"},{"py_cm":10591.1, "act_cm":12032.5, "bp_cm":11650.2, "py_ytd":10591.1, "act_ytd":12032.5, "bp_ytd":11650.2, "reg":"Northeast", "ram":"Chris Trott", "seg":"CU", "month":"may"},{"py_cm":861.8, "act_cm":982, "bp_cm":965.3, "py_ytd":861.8, "act_ytd":982, "bp_ytd":965.3, "reg":"Northeast", "ram":"Chris Trott", "seg":"Trvl", "month":"may"},{"py_cm":23345, "act_cm":27066, "bp_cm":26846.8, "py_ytd":23345, "act_ytd":27066, "bp_ytd":26846.8, "reg":"Northeast", "ram":"Chris Trott", "seg":"Vend", "month":"may"},{"py_cm":17400, "act_cm":17934.5, "bp_cm":20059.4, "py_ytd":17400, "act_ytd":17934.5, "bp_ytd":20059.4, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Big3", "month":"may"},{"py_cm":5267.3, "act_cm":5802.3, "bp_cm":5794, "py_ytd":5267.3, "act_ytd":5802.3, "bp_ytd":5794, "reg":"Northeast", "ram":"Greg Drillock", "seg":"CU", "month":"may"},{"py_cm":4101.8, "act_cm":3709.3, "bp_cm":4597.4, "py_ytd":4101.8, "act_ytd":3709.3, "bp_ytd":4597.4, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Trvl", "month":"may"},{"py_cm":30634, "act_cm":36408, "bp_cm":35229.1, "py_ytd":30634, "act_ytd":36408, "bp_ytd":35229.1, "reg":"Northeast", "ram":"Greg Drillock", "seg":"Vend", "month":"may"},{"py_cm":16637.7, "act_cm":15456.8, "bp_cm":19149.5, "py_ytd":16637.7, "act_ytd":15456.8, "bp_ytd":19149.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Big3", "month":"may"},{"py_cm":5093.5, "act_cm":5749.3, "bp_cm":5628.1, "py_ytd":5093.5, "act_ytd":5749.3, "bp_ytd":5628.1, "reg":"Northeast", "ram":"Montana Renno", "seg":"CU", "month":"may"},{"py_cm":1121, "act_cm":1043.8, "bp_cm":1255.5, "py_ytd":1121, "act_ytd":1043.8, "bp_ytd":1255.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Trvl", "month":"may"},{"py_cm":19383, "act_cm":20446, "bp_cm":22290.5, "py_ytd":19383, "act_ytd":20446, "bp_ytd":22290.5, "reg":"Northeast", "ram":"Montana Renno", "seg":"Vend", "month":"may"},{"py_cm":13945, "act_cm":16359.3, "bp_cm":16040.1, "py_ytd":13945, "act_ytd":16359.3, "bp_ytd":16040.1, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Big3", "month":"may"},{"py_cm":6587.4, "act_cm":7718.3, "bp_cm":7246.2, "py_ytd":6587.4, "act_ytd":7718.3, "bp_ytd":7246.2, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"CU", "month":"may"},{"py_cm":5673.8, "act_cm":5075.6, "bp_cm":6354.7, "py_ytd":5673.8, "act_ytd":5075.6, "bp_ytd":6354.7, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Trvl", "month":"may"},{"py_cm":26758, "act_cm":38492, "bp_cm":30771.7, "py_ytd":26758, "act_ytd":38492, "bp_ytd":30771.7, "reg":"Southeast", "ram":"Carroll Jenkins", "seg":"Vend", "month":"may"},{"py_cm":16313.5, "act_cm":18926.4, "bp_cm":18765.2, "py_ytd":16313.5, "act_ytd":18926.4, "bp_ytd":18765.2, "reg":"Southeast", "ram":"Open Role (SE)", "seg":"Big3", "month":"may"},{"py_cm":11067, "act_cm":12605.3, "bp_cm":12177, "py_ytd":11067, "act_ytd":12605.3, "bp_ytd":12177, "reg":"Southeast", "ram":"Open Role (SE)", "seg":"CU", "month":"may"},{"py_cm":6085.5, "act_cm":5567.5, "bp_cm":6815.7, "py_ytd":6085.5, "act_ytd":5567.5, "bp_ytd":6815.7, "reg":"Southeast", "ram":"Open Role (SE)", "seg":"Trvl", "month":"may"},{"py_cm":21595, "act_cm":26075, "bp_cm":24834.3, "py_ytd":21595, "act_ytd":26075, "bp_ytd":24834.3, "reg":"Southeast", "ram":"Open Role (SE)", "seg":"Vend", "month":"may"},{"py_cm":15304.5, "act_cm":19765.3, "bp_cm":17616.8, "py_ytd":15304.5, "act_ytd":19765.3, "bp_ytd":17616.8, "reg":"West", "ram":"Kendall Braidic", "seg":"Big3", "month":"may"},{"py_cm":20730, "act_cm":26543.5, "bp_cm":22809.6, "py_ytd":20730, "act_ytd":26543.5, "bp_ytd":22809.6, "reg":"West", "ram":"Kendall Braidic", "seg":"CU", "month":"may"},{"py_cm":6720.8, "act_cm":5981.9, "bp_cm":7577.9, "py_ytd":6720.8, "act_ytd":5981.9, "bp_ytd":7577.9, "reg":"West", "ram":"Kendall Braidic", "seg":"Trvl", "month":"may"},{"py_cm":24152, "act_cm":31245, "bp_cm":27774.8, "py_ytd":24152, "act_ytd":31245, "bp_ytd":27774.8, "reg":"West", "ram":"Kendall Braidic", "seg":"Vend", "month":"may"},{"py_cm":31053, "act_cm":26872.3, "bp_cm":35722.4, "py_ytd":31053, "act_ytd":26872.3, "bp_ytd":35722.4, "reg":"West", "ram":"Amy Quinet", "seg":"Big3", "month":"may"},{"py_cm":16028, "act_cm":16465.2, "bp_cm":17630.8, "py_ytd":16028, "act_ytd":16465.2, "bp_ytd":17630.8, "reg":"West", "ram":"Amy Quinet", "seg":"CU", "month":"may"},{"py_cm":5064.2, "act_cm":4025.2, "bp_cm":5673, "py_ytd":5064.2, "act_ytd":4025.2, "bp_ytd":5673, "reg":"West", "ram":"Amy Quinet", "seg":"Trvl", "month":"may"},{"py_cm":46066, "act_cm":54407, "bp_cm":52975.9, "py_ytd":46066, "act_ytd":54407, "bp_ytd":52975.9, "reg":"West", "ram":"Amy Quinet", "seg":"Vend", "month":"may"}];
+var VOLM_NCRAMS = ["Katie Naviaux", "Sierra Ford", "Meg Flom", "Rudy Wagner", "TJ McGowan", "Montana Renno", "Greg Drillock", "Chris Trott", "Carroll Jenkins", "Open Role (SE)", "Amy Quinet", "Kendall Braidic"];
+var VOLM_REG_NCRAMS = {"West": ["Amy Quinet", "Kendall Braidic"], "Central": ["Katie Naviaux", "Sierra Ford"], "Midwest": ["Meg Flom", "Rudy Wagner", "TJ McGowan"], "Northeast": ["Montana Renno", "Greg Drillock", "Chris Trott"], "Southeast": ["Carroll Jenkins", "Open Role (SE)"]};
 
 /* ---- utilities ---- */
 var CH = {};
@@ -1611,91 +1593,58 @@ function getKPIData() {
 }
 function kpiDefault() { return KPI.roll_feb_mar_apr_may || KPI.feb || []; }
 
-var rrtExpanded = {};
-
-function rrtToggle(reg) {
-  rrtExpanded[reg] = !rrtExpanded[reg];
-  renderRRT();
-}
-
 function renderRRT() {
   var el = document.getElementById('RRT');
   if (!el) return;
 
   var data = getKPIData();
-  var EXCLUDE = ['Open Role (SaMo)','Open Role (SE)'];
   var RC_LOCAL = {Central:'#378ADD',Midwest:'#1D9E75',Northeast:'#EF9F27',Southeast:'#E24B4A',West:'#7F77DD'};
-  var REGS_ORDER = ['Central','Midwest','Northeast','Southeast','West'];
-  var ordinals = ['1st','2nd','3rd','4th','5th'];
 
-  // Build region aggregates (excluding open roles)
-  var regMap = {};
-  REGS_ORDER.forEach(function(r){ regMap[r]={reg:r,bd:0,reach:0,equip:0,pipe:0,vend:0,scores:[],members:[]}; });
-  data.forEach(function(p){
-    if(EXCLUDE.indexOf(p.n)>=0) return;
-    var r=p.reg||gr(p.n).reg;
-    if(!regMap[r]) return;
-    regMap[r].bd+=p.bd||0; regMap[r].reach+=p.reach||0; regMap[r].equip+=p.equip||0;
-    regMap[r].pipe+=(p.pipe||0); regMap[r].vend+=p.vend||0;
-    regMap[r].scores.push(p.score||0);
-    regMap[r].members.push(p);
+  // Flat NCRAM ranking — every NCRAM ranked 1..N. Lowest score is best.
+  var rows = data.map(function(p){
+    var reg = p.reg || (gr(p.n) ? gr(p.n).reg : '');
+    return {n:p.n, reg:reg, bd:p.bd||0, reach:p.reach||0, equip:p.equip||0,
+            pipe:p.pipe||0, vend:p.vend||0, score:p.score||0};
   });
 
-  // Compute avg score and rank regions
-  var regs = REGS_ORDER.map(function(r){
-    var rm=regMap[r];
-    var avg=rm.scores.length ? Math.round(rm.scores.reduce(function(a,b){return a+b;},0)/rm.scores.length*10)/10 : 0;
-    return {reg:r,bd:rm.bd,reach:rm.reach,equip:rm.equip,pipe:rm.pipe,vend:rm.vend,avg:avg,members:rm.members.slice().sort(function(a,b){return a.score-b.score;})};
+  // Sort ascending (lowest score = best), then assign competition ranks (ties share a rank)
+  rows.sort(function(a,b){ return a.score - b.score || a.n.localeCompare(b.n); });
+  rows.forEach(function(r,i){
+    r.rank = (i>0 && r.score===rows[i-1].score) ? rows[i-1].rank : i+1;
   });
-  regs.sort(function(a,b){return a.avg-b.avg;});
-  regs.forEach(function(r,i){r.rank=i+1;});
 
-  var scoreColor=function(s,total){
-    var pct=s/total;
-    return pct<=0.4?'#1D9E75':pct<=0.7?'#EF9F27':'#E24B4A';
+  var n = rows.length;
+  var scoreColor = function(rank){
+    var pct = rank / n;
+    return pct<=0.34?'#1D9E75':pct<=0.67?'#EF9F27':'#E24B4A';
   };
 
   var html='<thead><tr>'
     +'<th style="text-align:center">Rank</th>'
+    +'<th style="text-align:left">NCRAM</th>'
     +'<th style="text-align:left">Region</th>'
     +'<th>BD<br>Wins</th>'
     +'<th>Reach</th>'
     +'<th>Equipment</th>'
     +'<th>Pipeline</th>'
     +'<th>New Vending<br>Touchpoints</th>'
-    +'<th>Avg<br>Score</th>'
+    +'<th>Score</th>'
     +'</tr></thead><tbody>';
 
-  regs.forEach(function(r){
-    var c=RC_LOCAL[r.reg]||'#888';
-    var sc=scoreColor(r.rank,regs.length);
-    var isOpen=!!rrtExpanded[r.reg];
-    html+='<tr class="rrt-reg" onclick="rrtToggle(\''+r.reg+'\')">'
-      +'<td><span class="rn">'+(ordinals[r.rank-1]||r.rank)+'</span></td>'
-      +'<td><span class="dot" style="background:'+c+';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle"></span>'
-      +r.reg+'<span class="rrt-chev'+(isOpen?' open':'')+'">›</span></td>'
+  rows.forEach(function(r){
+    var c = RC_LOCAL[r.reg]||'#888';
+    var sc = scoreColor(r.rank);
+    html+='<tr class="rrt-ram">'
+      +'<td style="text-align:center"><span class="rn">'+r.rank+'</span></td>'
+      +'<td style="font-weight:600">'+r.n+'</td>'
+      +'<td><span class="dot" style="background:'+c+';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle"></span>'+r.reg+'</td>'
       +'<td>'+r.bd.toLocaleString()+'</td>'
       +'<td>'+r.reach.toLocaleString()+'</td>'
       +'<td>'+r.equip.toLocaleString()+'</td>'
       +'<td>'+r.pipe.toLocaleString()+'</td>'
       +'<td>'+r.vend.toLocaleString()+'</td>'
-      +'<td><strong style="color:'+sc+'">'+r.avg+'</strong></td>'
+      +'<td><strong style="color:'+sc+'">'+r.score+'</strong></td>'
       +'</tr>';
-
-    if(isOpen){
-      r.members.forEach(function(p,i){
-        html+='<tr class="rrt-ncram">'
-          +'<td></td>'
-          +'<td>'+p.n+'</td>'
-          +'<td>'+(p.bd||0)+'</td>'
-          +'<td>'+(p.reach||0)+'</td>'
-          +'<td>'+(p.equip||0)+'</td>'
-          +'<td>'+(p.pipe||0)+'</td>'
-          +'<td>'+((p.vend||0).toLocaleString())+'</td>'
-          +'<td></td>'
-          +'</tr>';
-      });
-    }
   });
 
   html+='</tbody>';
@@ -2334,16 +2283,16 @@ function showInsights(focus){if(focus)curIF=focus;demoInsights();}
 function demoInsights(){
   var D={
     overall:[
-      {title:'West region leads all 5 regions in growth',body:'The West region is the standout performer with Amy Quinet and Jenny Lynch both posting strong gains. Jenny Lynch leads in C and U at +56.0% vs PY driven by aggressive account development. The West accounts for the highest volume contribution nationally this period.',sentiment:'positive',tag:'Top Region'},
+      {title:'West region leads all 5 regions in growth',body:'The West region is the standout performer with Amy Quinet and Kendall Braidic both posting strong gains. Kendall Braidic leads in C and U at +56.0% vs PY driven by aggressive account development. The West accounts for the highest volume contribution nationally this period.',sentiment:'positive',tag:'Top Region'},
       {title:'TJ McGowan Travel decline needs immediate action',body:'TJ McGowan is down -52.5% vs PY in Travel - the steepest single-segment decline on the team. This pulls overall Midwest Travel to -40.4% vs PY. A focused account review is warranted to determine if this is temporary or structural.',sentiment:'negative',tag:'Watch List'},
       {title:'Fitness Focus Wave creating strong reach pipeline',body:'The Zero Missed Workouts wave has activated 36 accounts and generated 305 new reach locations. Katie Naviaux alone secured 80 locations via Vasa and Defined Fitness. This is a strong foundation for future volume conversion in the fitness channel.',sentiment:'positive',tag:'Wave Impact'},
       {title:'Vending is the team highest-volume segment',body:'Vending is outperforming all other segments and most NCRAMs are posting gains. Carroll Jenkins is up +59.4% and Rudy Wagner +71.9% vs PY. The segment appears structurally healthy heading into Q2.',sentiment:'info',tag:'Segment Strength'}
     ],
     volume:[
-      {title:'Jenny Lynch posting exceptional C and U growth',body:'Jenny Lynch is up +56.0% vs PY in C and U with 4,436 actual vs 2,844 PY - the strongest segment gain on the team. This is driven by aggressive account development and strong distributor alignment in the West region.',sentiment:'positive',tag:'Strong Growth'},
+      {title:'Kendall Braidic posting exceptional C and U growth',body:'Kendall Braidic is up +56.0% vs PY in C and U with 4,436 actual vs 2,844 PY - the strongest segment gain on the team. This is driven by aggressive account development and strong distributor alignment in the West region.',sentiment:'positive',tag:'Strong Growth'},
       {title:'Rudy Wagner Travel collapse warrants review',body:'Rudy Wagner is down -77.5% vs PY in Travel (71 actual vs 316 PY). Combined with TJ McGowan at -52.5%, the Midwest Travel segment is significantly underperforming. Root cause analysis is needed immediately.',sentiment:'negative',tag:'Urgent Review'},
       {title:'Sierra Ford driving Central Vending performance',body:'Sierra Ford posted 13,374 actual in Vending vs 9,474 PY (+41.2%), the second-highest Vending gain on the team. This reflects strong distributor alignment and is keeping the Central region on trend.',sentiment:'positive',tag:'Top Performer'},
-      {title:'Big 3 is exactly split - six up, six down',body:'6 NCRAMs are above PY in Big 3 and 6 are below. Jenny Lynch (+53.6%) and Josh Queja (+13.3%) are the standouts. TJ McGowan (-8.2%) and Amy Quinet (-7.8%) are the primary drags. Big 3 team total is effectively flat vs PY.',sentiment:'neutral',tag:'Mixed Signal'}
+      {title:'Big 3 is exactly split - six up, six down',body:'6 NCRAMs are above PY in Big 3 and 6 are below. Kendall Braidic (+53.6%) and Open Role (SE) (+13.3%) are the standouts. TJ McGowan (-8.2%) and Amy Quinet (-7.8%) are the primary drags. Big 3 team total is effectively flat vs PY.',sentiment:'neutral',tag:'Mixed Signal'}
     ],
     kpi:[
       {title:'Sierra Ford leads KPI with balanced output',body:'Sierra Ford tops the KPI rankings with a score of 42, driven by 57 cold equipment placements - the highest on the team - plus 3 BD wins and 53 net new reach wins. This balanced output across all KPI categories is the benchmark for the team.',sentiment:'positive',tag:'Top KPI Rank'},
@@ -2358,9 +2307,9 @@ function demoInsights(){
       {title:'67 equipment units placed builds durable distribution',body:'The team placed 67 cold equipment units across the fitness wave - led by Meg Flom (14 Mega Slims at Powerhouse Gym), Katie Naviaux (7 at Defined Fitness), and TJ McGowan (7 Slim Mediums at FFC). Equipment placements are a strong predictor of sustained volume.',sentiment:'info',tag:'Equip Impact'}
     ],
     risk:[
-      {title:'Travel segment is a mounting risk to goal',body:'Travel is the only segment with a majority of NCRAMs below PY. Rudy Wagner (-77.5%), TJ McGowan (-52.5%), and Josh Queja (-29.5%) are the biggest drags. If Travel does not recover in Q1, the team will likely miss the 12% growth goal for this segment.',sentiment:'negative',tag:'Risk Alert'},
+      {title:'Travel segment is a mounting risk to goal',body:'Travel is the only segment with a majority of NCRAMs below PY. Rudy Wagner (-77.5%), TJ McGowan (-52.5%), and Open Role (SE) (-29.5%) are the biggest drags. If Travel does not recover in Q1, the team will likely miss the 12% growth goal for this segment.',sentiment:'negative',tag:'Risk Alert'},
       {title:'Carroll Jenkins Southeast pipeline is underutilized',body:'Carroll Jenkins has 960 vending touchpoints and won 6 fitness chain accounts but ranks last on the KPI scorecard. The Southeast has strong infrastructure for a strong Q2 - targeted coaching on BD and chain win activity could unlock significant output.',sentiment:'info',tag:'Opportunity'},
-      {title:'West C and U has strong Q2 upside potential',body:'Jenny Lynch and Amy Quinet have both posted strong C and U gains (+56.0% and +4.3% respectively). The West region C and U total is +33.9% vs PY. With proper investment this segment could challenge Northeast as the top C and U region.',sentiment:'positive',tag:'Growth Lever'},
+      {title:'West C and U has strong Q2 upside potential',body:'Kendall Braidic and Amy Quinet have both posted strong C and U gains (+56.0% and +4.3% respectively). The West region C and U total is +33.9% vs PY. With proper investment this segment could challenge Northeast as the top C and U region.',sentiment:'positive',tag:'Growth Lever'},
       {title:'Rudy Wagner Vending surge needs validation',body:'Rudy Wagner posted a +71.9% increase in Vending (9,605 vs 5,586 PY) in January alone. While exceptional, a gain of this magnitude should be validated to confirm it reflects genuine distribution gains rather than a one-time load.',sentiment:'neutral',tag:'Validate'}
     ]
   };
